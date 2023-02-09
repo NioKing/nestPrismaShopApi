@@ -10,16 +10,28 @@ export class CategoryService {
   
   create(createCategoryDto: Prisma.CategoryCreateInput) {
     return this.prisma.category.create({
-      data: createCategoryDto
+      data: createCategoryDto,
+      include: {
+        product: true
+      }
     })
   }
 
   findAll() {
-    return this.prisma.category.findMany()
+    return this.prisma.category.findMany({
+      include: {
+        product: true
+      }
+    })
   }
 
   findOne(id: number) {
-    return this.prisma.category.findUnique({where: {id}})
+    return this.prisma.category.findUnique({
+      where: { id },
+      include: {
+        product: true
+      }
+})
   }
 
   update(id: number, CategoryUpdateInput: Prisma.CategoryUpdateInput) {

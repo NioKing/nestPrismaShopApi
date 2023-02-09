@@ -7,20 +7,28 @@ import { UpdateProductDto } from './dto/update-product.dto';
 export class ProductService {
   constructor(private prisma: PrismaService) { }
 
-  create(createProductDto: Prisma.ProductCreateInput): Promise<Prisma.ProductCreateInput> {
+  create(createProductDto: Prisma.ProductCreateInput) {
     return this.prisma.product.create({
       data: createProductDto
-    })
+      }
+    )
   }
 
   findAll() {
-    return this.prisma.product.findMany()
+    return this.prisma.product.findMany({
+      include: {
+        categories: true
+      }
+    })
   }
 
   async findOne(id: number) {
     return await this.prisma.product.findUnique({
       where: {
         id
+      },
+      include: {
+        categories: true
       }
     })
   }
