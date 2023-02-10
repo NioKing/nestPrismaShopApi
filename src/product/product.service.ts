@@ -9,8 +9,20 @@ export class ProductService {
 
   create(createProductDto: Prisma.ProductCreateInput) {
     return this.prisma.product.create({
-      data: createProductDto
+      data: {
+        description: createProductDto.description,
+        image: createProductDto.image,
+        price: createProductDto.price,
+        title: createProductDto.title,
+        categories: {
+          connect: {
+            id: +createProductDto.categoryId
+          }
+        }
+      }, include: {
+        categories: true
       }
+    }
     )
   }
 

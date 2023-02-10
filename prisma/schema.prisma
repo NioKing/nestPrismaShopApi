@@ -17,6 +17,7 @@ model Product {
   categories  Category[]
   description String
   image       String
+  categoryId Int[]
 }
 
 model Category {
