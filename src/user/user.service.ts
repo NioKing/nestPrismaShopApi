@@ -17,7 +17,11 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.prisma.user.findMany({
+      include: {
+        Cart: true
+      }
+    })
   }
 
   findOne(id: string) {
