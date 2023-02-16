@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -8,12 +9,21 @@ export class CartService {
   constructor(private prisma: PrismaService) { }
 
 
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  create(userId: string) {
+    return this.prisma.cart.create({
+      data: {
+        userId: userId
+      }
+    })
   }
 
   findAll() {
-    return `This action returns all cart`;
+    return this.prisma.cart.findMany({
+      include: {
+        products: true,
+        user: true
+      }
+    })
   }
 
   findOne(id: number) {

@@ -17,7 +17,9 @@ model Product {
   categories  Category[]
   description String
   image       String
-  categoryId Int[]
+  categoryId  Int[]
+  carts       Cart[]
+  cartId      String[]
 }
 
 model Category {
@@ -27,15 +29,17 @@ model Category {
 }
 
 model Cart {
-  id     String   @id @default(uuid())
-  user   User     @relation(fields: [userId], references: [id])
-  date   DateTime @updatedAt
-  userId String   @unique
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id])
+  date      DateTime  @updatedAt
+  userId    String    @unique
+  products  Product[]
+  productId Int[]
 }
 
 model User {
   id       String @id @default(uuid())
   email    String @unique
   password String
-  Cart     Cart?
+  cart     Cart[]
 }

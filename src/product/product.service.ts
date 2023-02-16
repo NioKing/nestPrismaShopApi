@@ -20,7 +20,8 @@ export class ProductService {
           }
         }
       }, include: {
-        categories: true
+        categories: true,
+        carts: true
       }
     }
     )
@@ -29,7 +30,8 @@ export class ProductService {
   findAll() {
     return this.prisma.product.findMany({
       include: {
-        categories: true
+        categories: true,
+        carts: true
       }
     })
   }
@@ -40,7 +42,8 @@ export class ProductService {
         id
       },
       include: {
-        categories: true
+        categories: true,
+        carts: true
       }
     })
   }

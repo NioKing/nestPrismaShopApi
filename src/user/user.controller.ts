@@ -7,12 +7,14 @@ import { BadRequestException, UnauthorizedException} from '@nestjs/common/except
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { Req } from '@nestjs/common/decorators';
+import { CartService } from '../cart/cart.service';
 
 @Controller()
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private cartService: CartService
   ) { }
 
   @Post('register')
@@ -22,8 +24,9 @@ export class UserController {
       const user = await this.userService.signUp({
         email: createUserDto.email,
         password: hash,
-        Cart: createUserDto.Cart
+        cart: createUserDto.cart
       });
+      await this.cartService.create(user.id)
       let { password, ...response } = user
       return response
 
