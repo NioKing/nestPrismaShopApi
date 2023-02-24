@@ -38,8 +38,10 @@ model Cart {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
-  cart     Cart[]
+  id        String  @id @default(uuid())
+  email     String  @unique
+  password  String
+  harshedRt String?
+  cart      Cart[]
+
 }
