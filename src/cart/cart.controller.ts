@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { CurrentUserId } from '../user/decorators/current-user-id.decorator';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Controller('cart')
@@ -14,8 +13,8 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll();
+  findUserCart(@CurrentUserId() userId: string) {
+    return this.cartService.findUserCart(userId);
   }
 
   @Get(':id')

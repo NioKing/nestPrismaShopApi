@@ -17,11 +17,14 @@ export class CartService {
     })
   }
 
-  findAll() {
-    return this.prisma.cart.findMany({
+  findUserCart(userId: string) {
+    return this.prisma.cart.findUnique({
       include: {
         products: true,
         user: true
+      },
+      where: {
+        userId: userId
       }
     })
   }
