@@ -29,7 +29,7 @@ export class CartService {
     })
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} cart`;
   }
 

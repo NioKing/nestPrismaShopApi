@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, CacheTTL } from '@nestjs/common';
 import { CurrentUserId } from '../user/decorators/current-user-id.decorator';
 import { CartService } from './cart.service';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -11,7 +11,9 @@ export class CartController {
   create(@Body() userId: string) {
     return this.cartService.create(userId);
   }
-
+  
+  @CacheKey('user_cart')
+  @CacheTTL(10)
   @Get()
   findUserCart(@CurrentUserId() userId: string) {
     return this.cartService.findUserCart(userId);
@@ -19,7 +21,7 @@ export class CartController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
+    return this.cartService.findOne(id);
   }
 
   @Patch(':id')

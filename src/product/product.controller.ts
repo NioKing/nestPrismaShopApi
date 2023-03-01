@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Prisma } from '@prisma/client';
 
@@ -11,14 +11,16 @@ export class ProductController {
     return this.productService.create(createProductDto);
   }
 
+  @CacheKey('all_products')
   @Get()
   findAll() {
     return this.productService.findAll();
   }
 
+  @CacheKey('product')
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.productService.findOne(id);
   }
 
   @Patch(':id')

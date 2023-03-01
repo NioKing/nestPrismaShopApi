@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { CategoryService } from './category.service';
 
@@ -11,11 +11,13 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @CacheKey('all_categories')
   @Get()
   findAll() {
     return this.categoryService.findAll();
   }
 
+  @CacheKey('category')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);
