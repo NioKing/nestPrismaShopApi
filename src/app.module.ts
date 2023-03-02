@@ -18,9 +18,10 @@ import * as joi from 'joi'
       AT_SECRET: joi.string().required(),
       RT_SECRET: joi.string().required(),
       REDIS_HOST: joi.string().required(),
-      REDIS_PORT: joi.number().required(),
+      REDIS_PORT: joi.number().default(6379),
       REDIS_USERNAME: joi.string().required(),
-      REDIS_PASSWORD: joi.string().required()
+      REDIS_PASSWORD: joi.string().required(),
+      REDIS_TTL: joi.number().default(30)
     })
   }), CacheModule.registerAsync({
     isGlobal: true,
@@ -33,7 +34,7 @@ import * as joi from 'joi'
       // port: configService.get<number>('REDIS_PORT'),
       // username: configService.get<string>('REDIS_USERNAME'),
       // password: configService.get<string>('REDIS_PASSWORD'),
-      ttl: 30
+      ttl: configService.get<number>('REDIS_TTL')
     })
   })],
   controllers: [],

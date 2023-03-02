@@ -9,18 +9,21 @@ import { Tokens } from './types/tokens.type';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import exclude from '../utils/excludeField';
 import hashData from '../utils/hashData';
+import { CreateUserDto } from './dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private cartService: CartService
+    private cartService: CartService,
+    private configService: ConfigService
   ) { }
 
 
 
-  async signUp(createUserDto: Prisma.UserCreateInput): Promise<Tokens> {
+  async signUp(createUserDto: CreateUserDto): Promise<Tokens> {
     // Hash user password
     let hashedPassword = await hashData(createUserDto.password, 12)
     // Create user
@@ -45,7 +48,7 @@ export class UserService {
     return tokens
   }
 
-  async signIn(createUserDto: Prisma.UserCreateInput): Promise<Tokens> {
+  async signIn(createUserDto: CreateUserDto): Promise<Tokens> {
     // Find user
     const user = await this.prisma.user.findUnique({
       where: {
@@ -125,14 +128,14 @@ export class UserService {
         email
       }, {
         expiresIn: 60 * 20,
-        secret: process.env.AT_SECRET
+        secret: this.configService.get<string>('AT_SECRET')
       }),
       this.jwtService.signAsync({
         sub: userId,
         email
       }, {
         expiresIn: '14d',
-        secret: process.env.RT_SECRET
+        secret: this.configService.get<string>('RT_SECRET')
       })
     ])
     return {
@@ -146,7 +149,7 @@ export class UserService {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId
-      }  , include: {
+      }, include: {
         cart: {
           where: {
             userId: userId
@@ -156,22 +159,8 @@ export class UserService {
         }
       }
     })
-    return exclude(user, ['password'])
+    return exclude(user, ['password', 'harshedRt'])
   }
-
-  // findOne(id: string) {
-  //   return this.prisma.user.findUnique({
-  //     where: { id }, include: {
-  //       cart: {
-  //         where: {
-  //           userId: id
-  //         }, include: {
-  //           products: true
-  //         }
-  //       }
-  //     }
-  //   })
-  // }
 
   findOneByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } })

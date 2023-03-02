@@ -7,6 +7,7 @@ import { RtGuard } from './decorators/guards/rt.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CurrentUserId } from './decorators/current-user-id.decorator';
 import { isPublic } from './decorators/is-public-route.decorator';
+import {CreateUserDto} from './dto/create-user.dto';
 
 @Controller()
 export class UserController {
@@ -17,17 +18,16 @@ export class UserController {
 
   @isPublic()
   @Post('register')
-  async signUp(@Body() createUserDto: Prisma.UserCreateInput): Promise<Tokens> {
+  async signUp(@Body() createUserDto: CreateUserDto): Promise<Tokens> {
     return this.userService.signUp(createUserDto)
   }
 
   @isPublic()
   @Post('login')
-  async singIn(@Body() createUserDto: Prisma.UserCreateInput): Promise<Tokens> {
+  async singIn(@Body() createUserDto: CreateUserDto): Promise<Tokens> {
     return this.userService.signIn(createUserDto)
   }
 
-  @isPublic()
   @Post('logout')
   logout(@CurrentUserId() userId: string) {
     return this.userService.logout(userId)
