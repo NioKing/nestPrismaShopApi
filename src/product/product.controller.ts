@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Prisma } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product.dto';
+import { isPublic } from '../user/decorators/is-public-route.decorator';
 
 @Controller('products')
 export class ProductController {
@@ -13,12 +14,20 @@ export class ProductController {
   }
 
   @CacheKey('all_products')
+  @isPublic()
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAll(@Query('offset') skip?: string, @Query('limit') take?: string) {
+    if (!skip && !take) {
+      return this.productService.findAll()
+    }
+    else {
+      return this.productService.findAllPaginated({ skip: +skip, take: +take });
+    }
+
   }
 
   @CacheKey('product')
+  @isPublic()
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.productService.findOne(id);

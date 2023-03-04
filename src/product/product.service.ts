@@ -37,6 +37,38 @@ export class ProductService {
     })
   }
 
+  findAllPaginated(params: {
+    skip?: number,
+    take?: number
+  }) {
+
+    const { skip, take } = params
+
+    if (isNaN(skip)) {
+      return this.prisma.product.findMany({
+        take,
+        include: {
+          categories: true
+        }
+      })
+    }
+    if(isNaN(take)) {
+      return this.prisma.product.findMany({
+        skip,
+        include: {
+          categories: true
+        }
+      })
+    }
+    else {
+      return this.prisma.product.findMany({
+        skip, take, include: {
+          categories: true
+        }
+      })
+    }
+  }
+
   async findOne(id: number) {
     return await this.prisma.product.findUnique({
       where: {

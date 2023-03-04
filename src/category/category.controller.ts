@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { isPublic } from '../user/decorators/is-public-route.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto'
 
@@ -14,12 +15,14 @@ export class CategoryController {
   }
 
   @CacheKey('all_categories')
+  @isPublic()
   @Get()
   findAll() {
     return this.categoryService.findAll();
   }
 
   @CacheKey('category')
+  @isPublic()
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.categoryService.findOne(id);
