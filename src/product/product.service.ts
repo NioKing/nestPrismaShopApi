@@ -17,7 +17,7 @@ export class ProductService {
         title: createProductDto.title,
         categories: {
           connect: {
-            id: +createProductDto.categoryId
+            id: createProductDto.categoryId
           }
         }
       }, include: {

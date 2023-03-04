@@ -2,15 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import toTitleCase from '../utils/toTitleCase';
+import {CreateCategoryDto} from './dto/create-category.dto'
 
 @Injectable()
 export class CategoryService {
   constructor(private prisma: PrismaService) { }
 
   
-  create(createCategoryDto: Prisma.CategoryCreateInput) {
+  create(createCategoryDto: CreateCategoryDto) {
     return this.prisma.category.create({
-      data: createCategoryDto,
+      data: {
+        categoryName: toTitleCase(createCategoryDto.categoryName).trim(),
+        product: {
+          connect: {
+            id: createCategoryDto.productId
+          }
+        }
+      },
       include: {
         product: true
       }

@@ -1,4 +1,4 @@
-import { IsString, MaxLength, MinLength, IsUrl, IsInt } from "class-validator"
+import { IsString, MaxLength, MinLength, IsUrl, IsInt, IsOptional } from "class-validator"
 
 export class CreateProductDto {
     @IsString()
@@ -21,5 +21,6 @@ export class CreateProductDto {
     categoryId?:number
 
     @IsString()
+    @IsOptional()
     cartId?: string
 }
