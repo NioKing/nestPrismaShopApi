@@ -31,7 +31,7 @@ import * as joi from 'joi'
       store: redisStore,
       host: configService.get<string>('REDIS_HOST_DEV'),
       // host: configService.get<string>('REDIS_HOST'),
-      // port: configService.get<number>('REDIS_PORT'),
+      port: configService.get<number>('REDIS_PORT_DEV'),
       // username: configService.get<string>('REDIS_USERNAME'),
       // password: configService.get<string>('REDIS_PASSWORD'),
       ttl: configService.get<number>('REDIS_TTL')

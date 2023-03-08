@@ -3,6 +3,7 @@ import { ProductService } from './product.service';
 import { Prisma } from '@prisma/client';
 import { CreateProductDto } from './dto/create-product.dto';
 import { isPublic } from '../user/decorators/is-public-route.decorator';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductController {

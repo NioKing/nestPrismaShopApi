@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import { CartService } from '../cart/cart.service';
 import { PrismaService } from '../prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import { Tokens } from './types/tokens.type';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import exclude from '../utils/excludeField';

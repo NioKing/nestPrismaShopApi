@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { isPublic } from '../user/decorators/is-public-route.decorator';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto'
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 
 @Controller('categories')
@@ -29,7 +30,7 @@ export class CategoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() CategoryUpdateInput: Prisma.CategoryUpdateInput) {
+  update(@Param('id') id: number, @Body() CategoryUpdateInput: UpdateCategoryDto) {
     return this.categoryService.update(id, CategoryUpdateInput);
   }
 
