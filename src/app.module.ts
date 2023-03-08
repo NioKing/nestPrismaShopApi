@@ -9,9 +9,10 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AtGuard } from './user/decorators/guards/at.guard';
 import * as redisStore from 'cache-manager-redis-store';
 import * as joi from 'joi'
+import HealthModule from './health/health.module';
 
 @Module({
-  imports: [ProductModule, CategoryModule, CartModule, UserModule, ConfigModule.forRoot({
+  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule ,ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),
