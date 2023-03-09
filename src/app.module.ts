@@ -10,9 +10,12 @@ import { AtGuard } from './user/decorators/guards/at.guard';
 import * as redisStore from 'cache-manager-redis-store';
 import * as joi from 'joi'
 import HealthModule from './health/health.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule ,ConfigModule.forRoot({
+  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule, MulterModule.register({
+    dest: './uploads'
+  }) ,ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),

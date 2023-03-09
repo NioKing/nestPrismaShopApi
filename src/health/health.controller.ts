@@ -13,6 +13,6 @@ export class HealthController {
     @HealthCheck()
     @CacheTTL(5)
     async readiness() {
-        return await this.health.check([async () => await this.healthCheckService.isHealthy('database')])
+        return this.health.check([async () => await this.healthCheckService.isHealthy('database')])
     }
 }
