@@ -18,6 +18,7 @@ export class CreateProductDto {
     image: string
 
     @IsInt()
+    @IsOptional()
     categoryId?:number
 
     @IsString()

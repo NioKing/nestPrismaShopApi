@@ -8,6 +8,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { CurrentUserId } from './decorators/current-user-id.decorator';
 import { isPublic } from './decorators/is-public-route.decorator';
 import {CreateUserDto} from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Controller()
 export class UserController {
@@ -29,14 +30,14 @@ export class UserController {
   }
 
   @Post('logout')
-  logout(@CurrentUserId() userId: string) {
+  logout(@CurrentUserId() userId: string): Promise<void> {
     return this.userService.logout(userId)
   }
 
   @isPublic()
   @UseGuards(RtGuard)
   @Post('refresh')
-  refreshTokens(@CurrentUserId() userId: string, @CurrentUser('rt') refreshToken: string) {
+  refreshTokens(@CurrentUserId() userId: string, @CurrentUser('rt') refreshToken: string): Promise<Tokens> {
     return this.userService.refreshTokens(userId, refreshToken)
   }  
 
@@ -53,12 +54,12 @@ export class UserController {
   // }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<User> {
     return this.userService.remove(id);
   }
 }

@@ -1,16 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, UseInterceptors } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Prisma, Product } from '@prisma/client';
+import { Product } from './entities/product.entity'
 import { CreateProductDto } from './dto/create-product.dto';
 import { isPublic } from '../user/decorators/is-public-route.decorator';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { UploadedFile } from '@nestjs/common/decorators';
+import { diskStorage } from 'multer';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
+  // @Post()
+  // @UseInterceptors(FileInterceptor('image', {
+  //   dest: './uploads'
+  // }))
+  // create(@Body() createProductDto: CreateProductDto ,@UploadedFile() file: Express.Multer.File) {
+  //   return this.productService.create(createProductDto, file.filename);
+  // }
+
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
+  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productService.create(createProductDto);
   }
 
@@ -35,7 +46,7 @@ export class ProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateProductDto: Prisma.ProductUpdateInput): Promise<Product> {
+  update(@Param('id') id: number, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productService.update(id, updateProductDto);
   }
 

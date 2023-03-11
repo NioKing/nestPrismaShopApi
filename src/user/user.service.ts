@@ -11,6 +11,7 @@ import exclude from '../utils/excludeField';
 import hashData from '../utils/hashData';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -83,7 +84,7 @@ export class UserService {
     })
   }
 
-  async logout(userId: string) {
+  async logout(userId: string): Promise<void> {
     // Get user by userId where hashedRt is not null, and set it to null
     await this.prisma.user.updateMany({
       where: {
@@ -97,7 +98,7 @@ export class UserService {
     })
   }
 
-  async refreshTokens(userId: string, refreshToken: string) {
+  async refreshTokens(userId: string, refreshToken: string): Promise<Tokens> {
     // Find user
     const user = await this.prisma.user.findUnique({
       where: {
@@ -166,7 +167,7 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { email } })
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     return this.prisma.user.update({
       where: {
         id
@@ -175,7 +176,7 @@ export class UserService {
     })
   }
 
-  remove(id: string) {
+  remove(id: string): Promise<User> {
     return this.prisma.user.delete({
       where: {
         id

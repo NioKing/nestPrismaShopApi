@@ -27,7 +27,4 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
     @IsOptional()
     categoryId?: number
 
-    @IsString()
-    @IsOptional()
-    cartId?: string
 }

@@ -3,11 +3,6 @@ import { IsNumber, IsOptional, IsString, MaxLength, MinLength } from 'class-vali
 import { CreateCategoryDto } from './create-category.dto';
 
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
-
-    @IsNumber()
-    @IsOptional()
-    id: number
-    
     @IsString()
     @MinLength(2, {message: 'Minimum 2 characters!'})
     @MaxLength(30, {message: 'Maximum 30 characters!'})

@@ -13,9 +13,7 @@ import HealthModule from './health/health.module';
 import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule, MulterModule.register({
-    dest: './uploads'
-  }) ,ConfigModule.forRoot({
+  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule, MulterModule.register() ,ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),
@@ -34,7 +32,6 @@ import { MulterModule } from '@nestjs/platform-express';
     useFactory: async(configService: ConfigService) => ({
       store: redisStore,
       host: configService.get<string>('REDIS_HOST_DEV'),
-      // host: configService.get<string>('REDIS_HOST'),
       port: configService.get<number>('REDIS_PORT_DEV'),
       // username: configService.get<string>('REDIS_USERNAME'),
       // password: configService.get<string>('REDIS_PASSWORD'),

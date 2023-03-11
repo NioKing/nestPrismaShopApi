@@ -4,6 +4,4 @@ export class Product {
     price: string
     description: string
     image: string
-    categoryId: number[]
-    cartId: string[]
 }

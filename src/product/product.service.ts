@@ -3,12 +3,13 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto'
+import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductService {
   constructor(private prisma: PrismaService) { }
 
-  create(createProductDto: CreateProductDto) {
+  create(createProductDto: CreateProductDto): Promise<Product> {
     return this.prisma.product.create({
       data: {
         description: createProductDto.description,
@@ -28,7 +29,7 @@ export class ProductService {
     )
   }
 
-  findAll() {
+  findAll(): Promise<Product[]> {
     return this.prisma.product.findMany({
       include: {
         categories: true,
@@ -40,7 +41,7 @@ export class ProductService {
   findAllPaginated(params: {
     skip?: number,
     take?: number
-  }) {
+  }): Promise<Product[]> {
 
     const { skip, take } = params
 
@@ -69,7 +70,7 @@ export class ProductService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Product> {
     return await this.prisma.product.findUnique({
       where: {
         id
@@ -81,7 +82,7 @@ export class ProductService {
     })
   }
 
-  update(id: number, updateProductDto: Prisma.ProductUpdateInput) {
+  update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
     return this.prisma.product.update({
       where: {
         id
@@ -89,7 +90,7 @@ export class ProductService {
     })
   }
 
-  remove(id: number) {
+  remove(id: number): Promise<Product> {
     return this.prisma.product.delete({ where: { id } })
   }
 }
