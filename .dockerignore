@@ -1,0 +1,14 @@
+dist.do
+/node_modules
+!nodes_modules/.prisma
+
+.git
+.gitignore
+.dockerignore
+docker.env
+
+*.env
+
+.eslintrc.js
+.prettierrc
+README.md

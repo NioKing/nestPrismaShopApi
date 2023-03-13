@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,10 +12,33 @@ datasource db {
 }
 
 model Product {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  price     String
-  category  String
+  id          Int        @id @default(autoincrement())
+  title       String
+  price       String
+  categories  Category[]
   description String
-  image     String
+  image       String
+  carts       Cart[]
+}
+
+model Category {
+  id           Int       @id @default(autoincrement())
+  categoryName String
+  products     Product[]
+}
+
+model Cart {
+  id       String    @id @default(uuid())
+  user     User      @relation(fields: [userId], references: [id])
+  date     DateTime  @updatedAt
+  userId   String    @unique
+  products Product[]
+}
+
+model User {
+  id        String  @id @default(uuid())
+  email     String  @unique
+  password  String
+  harshedRt String?
+  cart      Cart[]
 }
