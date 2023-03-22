@@ -13,7 +13,6 @@ export class CartController {
 
   @EventPattern('create.user.cart')
   async createUserCart(@Payload() userId: string) {
-    console.log(userId)
     return this.cartService.create(userId)
   }
 
