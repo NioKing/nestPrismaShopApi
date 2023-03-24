@@ -1,14 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, UseInterceptors, OnModuleInit, CacheTTL } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { Product } from './entities/product.entity'
-import { CreateProductDto } from './dto/create-product.dto';
-import { isPublic } from '../user/decorators/is-public-route.decorator';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { Inject, UploadedFile } from '@nestjs/common/decorators';
 import { diskStorage } from 'multer';
 import { ClientKafka } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
+import { Product } from '@app/common/product/entities/product.entity';
+import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
+import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
+import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
 
 @Controller('products')
 export class ProductController implements OnModuleInit {

@@ -1,8 +1,6 @@
+import { CurrentUserId } from '@app/common/auth/decorators/current-user-id.decorator';
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, CacheTTL, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CurrentUserId } from '../user/decorators/current-user-id.decorator';
-import { CartService } from './cart.service';
-import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Controller('carts')
 export class CartController implements OnModuleInit {

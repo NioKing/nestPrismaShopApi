@@ -1,9 +1,9 @@
+import { CreateCategoryDto } from '@app/common/category/dto/create-category.dto';
+import { UpdateCategoryDto } from '@app/common/category/dto/update-category.dto';
+import { Category } from '@app/common/category/entities/category.entity';
 import { PrismaService } from '@app/common/prisma/prisma.service';
 import toTitleCase from '@app/common/utils/toTitleCase';
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from '../dto/create-category.dto';
-import { UpdateCategoryDto } from '../dto/update-category.dto';
-import { Category } from '../entities/category.entity';
 
 @Injectable()
 export class CategoryService {
@@ -26,7 +26,7 @@ export class CategoryService {
     })
   }
 
-  findAll(): Promise<Category[]> {
+  findAll(): Promise<Array<Category>> {
     return this.prisma.category.findMany({
       include: {
         products: true

@@ -3,15 +3,14 @@ import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { CartModule } from './cart/cart.module';
 import { UserModule } from './user/user.module';
-import { PrismaService } from './prisma.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { AtGuard } from './user/decorators/guards/at.guard';
 import * as redisStore from 'cache-manager-redis-store';
 import * as joi from 'joi'
 import HealthModule from './health/health.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AtGuard } from '@app/common/auth/decorators/guards/at.guard';
 
 @Module({
   imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({

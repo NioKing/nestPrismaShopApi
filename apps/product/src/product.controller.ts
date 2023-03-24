@@ -1,9 +1,9 @@
+import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
+import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
+import { Product } from '@app/common/product/entities/product.entity';
 import { Controller, Get, Query } from '@nestjs/common';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { Product } from '@prisma/client';
 import { Observable } from 'rxjs';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
 
 interface params {
@@ -22,7 +22,7 @@ export class ProductController {
 
 
   @MessagePattern('get.products')
-  async findAll(@Payload() params: params): Promise<Product[]> {
+  async findAll(@Payload() params: params): Promise<Array<Product>> {
     if (!params.skip && !params.take) {
       return this.productService.findAll()
     }

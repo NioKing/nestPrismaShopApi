@@ -1,12 +1,10 @@
+import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
+import { CreateCategoryDto } from '@app/common/category/dto/create-category.dto';
+import { UpdateCategoryDto } from '@app/common/category/dto/update-category.dto';
+import { Category } from '@app/common/category/entities/category.entity';
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { Prisma } from '@prisma/client';
 import { Observable } from 'rxjs';
-import { isPublic } from '../user/decorators/is-public-route.decorator';
-import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/create-category.dto'
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from './entities/category.entity';
 
 
 @Controller('categories')

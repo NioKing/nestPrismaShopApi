@@ -1,8 +1,8 @@
 import { PrismaService } from '@app/common/prisma/prisma.service';
+import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
+import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
+import { Product } from '@app/common/product/entities/product.entity';
 import { Injectable } from '@nestjs/common';
-import { Product } from '@prisma/client';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -28,7 +28,7 @@ export class ProductService {
     )
   }
 
-  findAll(): Promise<Product[]> {
+  findAll(): Promise<Array<Product>> {
     return this.prisma.product.findMany({
       include: {
         categories: true,
@@ -40,7 +40,7 @@ export class ProductService {
   findAllPaginated(params: {
     skip?: number,
     take?: number
-  }): Promise<Product[]> {
+  }): Promise<Array<Product>> {
 
     const { skip, take } = params
 

@@ -1,32 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, OnModuleInit, Inject, OnApplicationShutdown } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from '@prisma/client';
-import { Tokens } from './types/tokens.type';
-import { RtGuard } from './decorators/guards/rt.guard';
-import { CurrentUser } from './decorators/current-user.decorator';
-import { CurrentUserId } from './decorators/current-user-id.decorator';
-import { isPublic } from './decorators/is-public-route.decorator';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
 import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { refreshTokenData } from '@app/common/interfaces/refresh-token.interface';
+import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
+import { CreateUserDto } from '@app/common/auth/dto/create-user.dto';
+import { Tokens } from '@app/common/auth/dto/tokens.type';
+import { RtGuard } from '@app/common/auth/decorators/guards/rt.guard';
+import { CurrentUserId } from '@app/common/auth/decorators/current-user-id.decorator';
+import { CurrentUser } from '@app/common/auth/decorators/current-user.decorator';
+import { User } from '@app/common/auth/entities/user.entity';
+import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
 
 @Controller()
 export class UserController implements OnModuleInit {
-  // @Client({
-  //   transport: Transport.KAFKA,
-  //   options: {
-  //     client: {
-  //       clientId: 'auth',
-  //       brokers: ['localhost:9092']
-  //     },
-  //     consumer: {
-  //       groupId: 'auth-consumer'
-  //     }
-  //   }
-  // })
-  // client: ClientKafka
 
   constructor(
     @Inject('AUTH_MICROSERVICE') private client: ClientKafka
@@ -45,20 +32,20 @@ export class UserController implements OnModuleInit {
 
   @isPublic()
   @Post('register')
-  async signUp(@Body() createUserDto: CreateUserDto): Promise<Observable<Tokens>> {
+  signUp(@Body() createUserDto: CreateUserDto): Observable<Tokens> {
     return this.client.send('sign.up', createUserDto)
   }
 
   @isPublic()
   @Post('login')
-  async singIn(@Body() createUserDto: CreateUserDto): Promise<Observable<Tokens>> {
+  singIn(@Body() createUserDto: CreateUserDto): Observable<Tokens> {
     return this.client.send('sign.in', createUserDto)
   }
 
   @isPublic()
   @UseGuards(RtGuard)
   @Post('refresh')
-  async refreshTokens(@Body() refreshTokenData: refreshTokenData, @CurrentUserId() userId: string, @CurrentUser('rt') refreshToken: string): Promise<Observable<Tokens>> {
+  refreshTokens(@Body() refreshTokenData: refreshTokenData, @CurrentUserId() userId: string, @CurrentUser('rt') refreshToken: string): Observable<Tokens> {
     refreshTokenData = {
       userId,
       refreshToken
@@ -67,72 +54,26 @@ export class UserController implements OnModuleInit {
   }
 
   @Post('logout')
-  async logout(@CurrentUserId() userId: string): Promise<Observable<void>> {
+  logout(@CurrentUserId() userId: string): Observable<void> {
     return this.client.send('logout', userId)
   }
 
   @CacheKey('user')
   @CacheTTL(10)
   @Get('user')
-  async findCurrentUser(@CurrentUserId() userId: string): Promise<Observable<User>> {
+  findCurrentUser(@CurrentUserId() userId: string): Observable<User> {
     return this.client.send('find.current.user', userId);
   }
 
   @Patch('user')
-  async update(@CurrentUserId() userId: string, @Body() updateUserDto: UpdateUserDto): Promise<Observable<User>> {
+  update(@CurrentUserId() userId: string, @Body() updateUserDto: UpdateUserDto): Observable<User> {
     updateUserDto.id = userId
     return this.client.send('update.current.user', updateUserDto);
   }
 
   @Delete('user')
-  async remove(@CurrentUserId() id: string): Promise<Observable<User>> {
+  remove(@CurrentUserId() id: string): Observable<User> {
     return this.client.send('delete.current.user', id)
   }
 
-
-  // @isPublic()
-  // @Post('register')
-  // async signUp(@Body() createUserDto: CreateUserDto): Promise<Tokens> {
-  //   return this.userService.signUp(createUserDto)
-  // }
-
-  // @isPublic()
-  // @Post('login')
-  // async singIn(@Body() createUserDto: CreateUserDto): Promise<Tokens> {
-  //   return this.userService.signIn(createUserDto)
-  // }
-
-  // @Post('logout')
-  // logout(@CurrentUserId() userId: string): Promise<void> {
-  //   return this.userService.logout(userId)
-  // }
-
-  // @isPublic()
-  // @UseGuards(RtGuard)
-  // @Post('refresh')
-  // refreshTokens(@CurrentUserId() userId: string, @CurrentUser('rt') refreshToken: string): Promise<Tokens> {
-  //   return this.userService.refreshTokens(userId, refreshToken)
-  // }  
-
-  // @CacheKey('user')
-  // @CacheTTL(10)
-  // @Get('user')
-  // findCurrentUser(@CurrentUserId() userId: string) {
-  //   return this.userService.findCurrentUser(userId);
-  // }
-
-  // // @Get(':id')
-  // // findOne(@Param('id') id: string) {
-  // //   return this.userService.findOne(id);
-  // // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
-  //   return this.userService.update(id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string): Promise<User> {
-  //   return this.userService.remove(id);
-  // }
 }

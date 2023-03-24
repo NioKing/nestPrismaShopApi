@@ -47,6 +47,6 @@ import { RefreshTokenStrategy } from './strategies/rt.strategy';
     KafkaModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, RefreshTokenStrategy, AccessTokenStrategy],
+  providers: [AuthService, PrismaService],
 })
 export class AuthModule {}

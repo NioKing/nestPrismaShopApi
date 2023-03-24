@@ -17,8 +17,7 @@ export class CartService {
   findUserCart(userId: string) {
     return this.prisma.cart.findUnique({
       include: {
-        products: true,
-        user: true
+        products: true
       },
       where: {
         userId: userId

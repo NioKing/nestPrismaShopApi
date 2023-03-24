@@ -1,36 +1,29 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
-// import { CartService } from '../cart/cart.service';
-import { PrismaService } from '../../../libs/common/src/prisma/prisma.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcryptjs'
-import { Tokens } from './types/tokens.type';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import exclude from '@app/common/utils/excludeField';
 import hashData from '@app/common/utils/hashData';
-import { CreateUserDto } from './dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
-import { User } from './entities/user.entity';
 import { ClientKafka } from '@nestjs/microservices';
-import { ProducerService } from '@app/common/kafka/producer.service';
+import { PrismaService } from '@app/common/prisma/prisma.service';
+import { CreateUserDto } from '@app/common/auth/dto/create-user.dto';
+import { Tokens } from '@app/common/auth/dto/tokens.type';
+import { User } from '@app/common/auth/entities/user.entity';
+import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
+import { excludedUser } from '@app/common/auth/entities/excludedUser.entity';
+
 
 @Injectable()
-export class AuthService implements OnModuleInit {
+export class AuthService {
 
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    // private cartService: CartService,
-    private producerService: ProducerService,
     private configService: ConfigService,
     @Inject('CART_MICROSERVICE') private readonly cartClient: ClientKafka,
   ) { }
-
-  async onModuleInit() {
-    this.cartClient.subscribeToResponseOf('create.user.cart')
-    await this.cartClient.connect()
-  }
 
 
   async signUp(createUserDto: CreateUserDto): Promise<Tokens> {
@@ -81,7 +74,7 @@ export class AuthService implements OnModuleInit {
     return tokens
   }
 
-  async updateRt(userId: string, refreshToken: string) {
+  async updateRt(userId: string, refreshToken: string): Promise<void> {
     // Update refresh token
     const hashedToken = await hashData(refreshToken, 12)
     await this.prisma.user.update({
@@ -155,7 +148,7 @@ export class AuthService implements OnModuleInit {
   }
 
   // Find user
-  async findCurrentUser(userId: string): Promise<User> {
+  async findCurrentUser(userId: string): Promise<excludedUser> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId
@@ -176,7 +169,7 @@ export class AuthService implements OnModuleInit {
     return this.prisma.user.findUnique({ where: { email } })
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<excludedUser> {
     let updatedUser = await this.prisma.user.update({
       where: {
         id

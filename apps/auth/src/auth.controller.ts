@@ -1,18 +1,15 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, Logger, Inject, OnModuleInit } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Prisma } from '@prisma/client';
-import { Tokens } from './types/tokens.type';
-import { RtGuard } from './decorators/guards/rt.guard';
-import { CurrentUser } from '@app/common/decorators/current-user.decorator';
-import { CurrentUserId } from '@app/common/decorators/current-user-id.decorator';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUserId } from './decorators/current-user-id.decorator';
 import { isPublic } from '@app/common/decorators/is-public-route.decorator';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
 import { ClientKafka, Ctx, KafkaContext, MessagePattern, Payload } from '@nestjs/microservices';
-import { KafkaMessage } from '@app/common/interfaces/kafka-message.interface';
 import { refreshTokenData } from '@app/common/interfaces/refresh-token.interface';
-import { use } from 'passport';
+import { CreateUserDto } from '@app/common/auth/dto/create-user.dto';
+import { Tokens } from '@app/common/auth/dto/tokens.type';
+import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
+import { User } from '@app/common/auth/entities/user.entity';
+import { excludedUser } from '@app/common/auth/entities/excludedUser.entity';
 
 @Controller()
 export class AuthController {
@@ -42,12 +39,12 @@ export class AuthController {
   }
 
   @MessagePattern('find.current.user')
-  findCurrentUser(@Payload() userId: string) {
+  findCurrentUser(@Payload() userId: string): Promise<excludedUser> {
     return this.authService.findCurrentUser(userId);
   }
 
   @MessagePattern('update.current.user')
-  update(@Payload() user: UpdateUserDto): Promise<User> {
+  update(@Payload() user: UpdateUserDto): Promise<excludedUser> {
     return this.authService.update(user.id, user);
   }
 

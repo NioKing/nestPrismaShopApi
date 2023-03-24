@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
-import { PrismaService } from '../prisma.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -23,6 +22,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ])
   ],
   controllers: [ProductController],
-  providers: [PrismaService]
+  providers: []
 })
 export class ProductModule {}
