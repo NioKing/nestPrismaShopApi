@@ -1,7 +1,9 @@
 import { CacheTTL, Controller, Get, Inject, OnModuleInit } from "@nestjs/common";
 import { ClientKafka } from "@nestjs/microservices";
+import { ApiTags } from "@nestjs/swagger";
 import { HealthCheck, HealthCheckService } from "@nestjs/terminus";
 
+@ApiTags('health')
 @Controller('health')
 export class HealthController implements OnModuleInit {
     constructor(

@@ -1,7 +1,9 @@
 import { CurrentUserId } from '@app/common/auth/decorators/current-user-id.decorator';
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, CacheTTL, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('carts')
 @Controller('carts')
 export class CartController implements OnModuleInit {
   constructor(

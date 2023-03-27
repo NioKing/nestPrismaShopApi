@@ -8,7 +8,9 @@ import { Product } from '@app/common/product/entities/product.entity';
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
 import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
+import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiResponse, ApiTags,  } from '@nestjs/swagger';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductController implements OnModuleInit {
   constructor(
@@ -25,19 +27,26 @@ export class ProductController implements OnModuleInit {
     await this.client.connect()
   }
 
+  @ApiResponse({
+    type: Product,
+    isArray: true
+  })
+  @ApiOperation({
+    summary: 'Get all products'
+  })
   @CacheKey('all_products')
   @isPublic()
   @Get()
   findAll(@Query('offset') skip?: string, @Query('limit') take?: string): Observable<Product[]> {
-    if (!skip && !take) {
-      return this.client.send('get.products', '')
-    }
-    else {
-      return this.client.send('get.products', { skip, take })
-    }
-
+    return this.client.send('get.products', { skip, take })
   }
 
+  @ApiResponse({
+    type: Product
+  })
+  @ApiOperation({
+    summary: 'Get product by id'
+  })
   @CacheKey('product')
   @CacheTTL(5)
   @isPublic()
@@ -46,17 +55,50 @@ export class ProductController implements OnModuleInit {
     return this.client.send('get.product', id);
   }
 
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Access token'
+  })
+  @ApiResponse({
+    description: 'Product has been created',
+    type: Product
+  })
+  @ApiOperation({
+    summary: 'Create product'
+  })
   @Post()
   create(@Body() createProductDto: CreateProductDto): Observable<Product> {
     return this.client.send('create.product', createProductDto)
   }
 
 
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Access token'
+  })
+  @ApiResponse({
+    description: 'Product has been updated',
+    type: Product
+  })
+  @ApiOperation({
+    summary: 'Update product'
+  })
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateProductDto: UpdateProductDto): Observable<Product> {
     return this.client.send('update.product', { id, updateProductDto });
   }
 
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Access token'
+  })
+  @ApiResponse({
+    description: 'Product has been removed',
+    type: Product
+  })
+  @ApiOperation({
+    summary: "Delete product"
+  })
   @Delete(':id')
   remove(@Param('id') id: number): Observable<Product> {
     return this.client.send('delete.product', id);

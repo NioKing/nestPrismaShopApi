@@ -11,7 +11,9 @@ import { CurrentUserId } from '@app/common/auth/decorators/current-user-id.decor
 import { CurrentUser } from '@app/common/auth/decorators/current-user.decorator';
 import { User } from '@app/common/auth/entities/user.entity';
 import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller()
 export class UserController implements OnModuleInit {
 

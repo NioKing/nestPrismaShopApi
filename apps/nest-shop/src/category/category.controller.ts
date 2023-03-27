@@ -4,9 +4,10 @@ import { UpdateCategoryDto } from '@app/common/category/dto/update-category.dto'
 import { Category } from '@app/common/category/entities/category.entity';
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 
-
+@ApiTags('categories')
 @Controller('categories')
 export class CategoryController implements OnModuleInit {
   constructor(
