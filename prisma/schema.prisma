@@ -40,5 +40,12 @@ model User {
   email     String  @unique
   password  String
   harshedRt String?
+  role      Role    @default(USER)
   cart      Cart[]
+}
+
+enum Role {
+  USER
+  SELLER
+  ADMIN
 }

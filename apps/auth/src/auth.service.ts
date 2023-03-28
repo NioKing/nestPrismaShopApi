@@ -45,7 +45,7 @@ export class AuthService {
     // Generate cart for new user
     this.cartClient.emit('create.user.cart', user.id)
     // Assign id and email into token
-    const tokens = await this.createTokens(user.id, user.email)
+    const tokens = await this.createTokens(user.id, user.email, user.role)
     // Update refresh token
     await this.updateRt(user.id, tokens.refresh_token)
     return tokens
@@ -69,7 +69,7 @@ export class AuthService {
       throw new ForbiddenException('Invalid password or email!')
     }
     // Create and return tokens if user is valid
-    const tokens = await this.createTokens(user.id, user.email)
+    const tokens = await this.createTokens(user.id, user.email, user.role)
     await this.updateRt(user.id, tokens.refresh_token)
     return tokens
   }
@@ -118,17 +118,18 @@ export class AuthService {
       throw new ForbiddenException('Access denied!')
     }
     // Create and return tokens
-    const tokens = await this.createTokens(user.id, user.email)
+    const tokens = await this.createTokens(user.id, user.email, user.role)
     await this.updateRt(user.id, tokens.refresh_token)
     return tokens;
   }
 
-  async createTokens(userId: string, email: string): Promise<Tokens> {
+  async createTokens(userId: string, email: string, role: string): Promise<Tokens> {
     // Create tokens as promises
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync({
         sub: userId,
-        email
+        email,
+        role
       }, {
         expiresIn: 60 * 20,
         secret: this.configService.get<string>('AT_SECRET')

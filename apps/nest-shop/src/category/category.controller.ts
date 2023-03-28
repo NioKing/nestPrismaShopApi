@@ -1,4 +1,6 @@
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
+import { Roles } from '@app/common/auth/decorators/roles.decorator';
+import { Role } from '@app/common/auth/dto/role.enum';
 import { CreateCategoryDto } from '@app/common/category/dto/create-category.dto';
 import { UpdateCategoryDto } from '@app/common/category/dto/update-category.dto';
 import { Category } from '@app/common/category/entities/category.entity';
@@ -43,6 +45,7 @@ export class CategoryController implements OnModuleInit {
     return this.client.send('get.category', id)
   }
 
+  @Roles(Role.USER, Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: number, @Body() categoryUpdateInput: UpdateCategoryDto): Observable<Category> {
     return this.client.send('update.category', {id, categoryUpdateInput});

@@ -26,12 +26,13 @@ export class CategoryService {
     })
   }
 
-  findAll(): Promise<Array<Category>> {
-    return this.prisma.category.findMany({
+  async findAll(): Promise<Array<Category>> {
+    const category = await this.prisma.category.findMany({
       include: {
         products: true
       }
-    })
+    });
+    return category.sort((a, b) => a.id > b.id ? 1 : -1);
   }
 
   findOne(id: number): Promise<Category> {

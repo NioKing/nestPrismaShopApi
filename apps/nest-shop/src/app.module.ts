@@ -11,6 +11,7 @@ import HealthModule from './health/health.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AtGuard } from '@app/common/auth/decorators/guards/at.guard';
+import { RolesGuard } from '@app/common/auth/decorators/guards/roles.guard';
 
 @Module({
   imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
@@ -46,7 +47,12 @@ import { AtGuard } from '@app/common/auth/decorators/guards/at.guard';
   {
     provide: APP_INTERCEPTOR,
     useClass: CacheInterceptor
+  },
+  {
+    provide: APP_GUARD,
+    useClass: RolesGuard
   }
+  
 ],
 })
 export class AppModule { }
