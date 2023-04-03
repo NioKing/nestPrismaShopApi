@@ -15,8 +15,7 @@ export class NotificationsService {
   
   async sendEmail() {
     await this.mailerService.sendMail({
-      to: 'kirill508@gmail.com',
-      // from: 'example@mail.com',
+      to: 'xodedit472@cyclesat.com',
       subject: 'Welcome to Shop App!',
       template: './welcoming',
       context: {
