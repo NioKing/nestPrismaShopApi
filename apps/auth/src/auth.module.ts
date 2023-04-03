@@ -37,6 +37,19 @@ import { RefreshTokenStrategy } from './strategies/rt.strategy';
             groupId: 'cart-consumer'
           }
         }
+      },
+      {
+        name: 'NOTIFICATIONS_MICROSERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'notifications',
+            brokers: ['localhost:9092']
+          },
+          consumer: {
+            groupId: 'notifications-consumer'
+          }
+        }
       }
     ],
     ),

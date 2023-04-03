@@ -8,13 +8,10 @@ import { ProductService } from './product.service';
 
 interface params {
   skip: string,
-  take: string
+  take: string,
+  query: string
 }
 
-interface product {
-  id: number,
-  updateProductDto: UpdateProductDto
-}
 
 @Controller()
 export class ProductController {
@@ -22,7 +19,10 @@ export class ProductController {
 
 
   @MessagePattern('get.products')
-  async findAll(@Payload() params: params): Promise<Array<Product>> {
+  async findAll(@Payload() params: params) {
+    if (params.query) {
+      return this.productService.searchForProduct(params.query)
+    }
     if (!params.skip && !params.take) {
       return this.productService.findAll()
     }
@@ -32,6 +32,12 @@ export class ProductController {
         take: +params.take
       })
     }
+  }
+
+  @MessagePattern('search.product')
+  searchForProduct(@Payload() query: string) {
+    console.log(query)
+    return this.productService.searchForProduct(query)
   }
 
   @MessagePattern('create.product')

@@ -32,7 +32,7 @@ export class CategoryService {
         products: true
       }
     });
-    return category.sort((a, b) => a.id > b.id ? 1 : -1);
+    return category.sort((a, b) => a.id - b.id);
   }
 
   findOne(id: number): Promise<Category> {

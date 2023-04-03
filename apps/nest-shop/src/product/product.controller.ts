@@ -37,8 +37,8 @@ export class ProductController implements OnModuleInit {
   @CacheKey('all_products')
   @isPublic()
   @Get()
-  findAll(@Query('offset') skip?: string, @Query('limit') take?: string): Observable<Product[]> {
-    return this.client.send('get.products', { skip, take })
+  findAll(@Query('offset') skip?: string, @Query('limit') take?: string, @Query('query') query?: string): Observable<Product[]> {
+    return this.client.send('get.products', { skip, take, query })
   }
 
   @ApiResponse({
@@ -70,7 +70,6 @@ export class ProductController implements OnModuleInit {
   create(@Body() createProductDto: CreateProductDto): Observable<Product> {
     return this.client.send('create.product', createProductDto)
   }
-
 
   @ApiHeader({
     name: 'Authorization',

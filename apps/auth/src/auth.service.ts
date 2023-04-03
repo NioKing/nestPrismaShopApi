@@ -23,6 +23,7 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     @Inject('CART_MICROSERVICE') private readonly cartClient: ClientKafka,
+    @Inject('NOTIFICATIONS_MICROSERVICE') private readonly notificationsClient: ClientKafka
   ) { }
 
 

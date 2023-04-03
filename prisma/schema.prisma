@@ -4,6 +4,7 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["linux-musl-openssl-3.0.x"]
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -36,12 +37,12 @@ model Cart {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  email     String  @unique
-  password  String
-  harshedRt String?
-  role      Role    @default(USER)
-  cart      Cart[]
+  id            String     @id @default(uuid())
+  email         String     @unique
+  password      String
+  harshedRt     String?
+  role          Role       @default(USER)
+  cart          Cart[]
 }
 
 enum Role {
@@ -49,3 +50,4 @@ enum Role {
   SELLER
   ADMIN
 }
+

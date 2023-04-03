@@ -69,6 +69,17 @@ export class ProductService {
     }
   }
 
+  async searchForProduct(query: string) {
+    return this.prisma.product.findMany({
+      where: {
+        title: {
+          search: query,
+          mode: 'insensitive'
+        }
+      }
+    })
+  }
+
   async findOne(id: number): Promise<Product> {
     return await this.prisma.product.findUnique({
       where: {
