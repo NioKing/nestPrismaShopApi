@@ -70,14 +70,15 @@ export class ProductService {
   }
 
   async searchForProduct(query: string) {
-    return this.prisma.product.findMany({
-      where: {
-        title: {
-          search: query,
-          mode: 'insensitive'
-        }
-      }
-    })
+    return this.prisma.$queryRawUnsafe(`SELECT * FROM "Product" WHERE "title" ILIKE '%${query}%'`)
+    // return this.prisma.product.findMany({
+    //   where: {
+    //     title: {
+    //       search: query,
+    //       mode: 'insensitive'
+    //     }
+    //   }
+    // })
   }
 
   async findOne(id: number): Promise<Product> {
