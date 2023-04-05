@@ -35,7 +35,7 @@ export class ProductController implements OnModuleInit {
     summary: 'Get all products'
   })
   @CacheKey('all_products')
-  @CacheTTL(12)
+  @CacheTTL(5)
   @isPublic()
   @Get()
   findAll(@Query('offset') skip?: string, @Query('limit') take?: string, @Query('query') query?: string): Observable<Product[]> {

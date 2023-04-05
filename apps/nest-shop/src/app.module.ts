@@ -36,7 +36,7 @@ import { RolesGuard } from '@app/common/auth/decorators/guards/roles.guard';
       port: configService.get<number>('REDIS_PORT_DEV'),
       // username: configService.get<string>('REDIS_USERNAME'),
       // password: configService.get<string>('REDIS_PASSWORD'),
-      ttl: configService.get<number>('REDIS_TTL')
+      ttl: +configService.get<number>('REDIS_TTL')
     })
   })],
   controllers: [],
