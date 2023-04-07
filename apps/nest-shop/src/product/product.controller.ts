@@ -8,7 +8,7 @@ import { Product } from '@app/common/product/entities/product.entity';
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
 import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
-import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiResponse, ApiTags, } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiTags, } from '@nestjs/swagger';
 import { Request, Response } from 'express'
 
 
@@ -35,6 +35,18 @@ export class ProductController implements OnModuleInit {
   })
   @ApiOperation({
     summary: 'Get all products'
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false
+  })
+  @ApiQuery({
+    name: 'query',
+    required: false
   })
   @CacheKey('all_products')
   @CacheTTL(5)
