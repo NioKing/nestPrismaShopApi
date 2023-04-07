@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [ClientsModule.register([
@@ -19,7 +20,7 @@ import { ProductService } from './product.service';
         }
       }
     }
-  ]),
+  ])
   ],
   controllers: [ProductController],
   providers: [ProductService, PrismaService],

@@ -18,12 +18,12 @@ export class CreateProductDto {
 
     @ApiProperty()
     @IsString()
-    @MinLength(5, {message: 'Description cannot be emprty!'})
+    @MinLength(5, {message: 'Description cannot be empty!'})
     @MaxLength(400, {message: 'Maximum 400 characters'})
     description: string
     
     @ApiProperty()
-    @IsUrl()
+    // @IsUrl()
     image: string
 
     @ApiPropertyOptional({

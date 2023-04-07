@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [

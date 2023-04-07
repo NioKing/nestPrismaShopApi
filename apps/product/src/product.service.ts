@@ -9,23 +9,40 @@ export class ProductService {
   constructor(private prisma: PrismaService) { }
 
   create(createProductDto: CreateProductDto): Promise<Product> {
+    if(createProductDto.categoryId) {
+      return this.prisma.product.create({
+        data: {
+          description: createProductDto.description,
+          image: createProductDto.image,
+          price: createProductDto.price,
+          title: createProductDto.title,
+          categories: {
+            connect: {
+              id: createProductDto.categoryId
+            }
+          }
+        }, 
+        include: {
+          categories: true,
+          carts: true
+        }
+      }
+      )
+    }
     return this.prisma.product.create({
       data: {
         description: createProductDto.description,
         image: createProductDto.image,
         price: createProductDto.price,
         title: createProductDto.title,
-        categories: {
-          connect: {
-            id: createProductDto.categoryId
-          }
-        }
-      }, include: {
+      }, 
+      include: {
         categories: true,
         carts: true
       }
     }
     )
+    
   }
 
   findAll(): Promise<Array<Product>> {

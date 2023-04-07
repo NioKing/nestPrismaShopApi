@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, UseInterceptors, OnModuleInit, CacheTTL } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
-import { Inject, UploadedFile } from '@nestjs/common/decorators';
+import { Inject, Res, UploadedFile } from '@nestjs/common/decorators';
 import { diskStorage } from 'multer';
 import { ClientKafka } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
@@ -8,7 +8,9 @@ import { Product } from '@app/common/product/entities/product.entity';
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
 import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
-import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiResponse, ApiTags,  } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiResponse, ApiTags, } from '@nestjs/swagger';
+import { Request, Response } from 'express'
+
 
 @ApiTags('products')
 @Controller('products')
@@ -42,6 +44,15 @@ export class ProductController implements OnModuleInit {
     return this.client.send('get.products', { skip, take, query })
   }
 
+  @isPublic()
+  @CacheKey('product_image')
+  @Get('pictures/:filename')
+  getImage(@Param('filename') filename: string, @Res() res: Response) {
+    res.sendFile(filename, { root: './uploads/products' })
+    // return filename
+  }
+
+
   @ApiResponse({
     type: Product
   })
@@ -68,7 +79,24 @@ export class ProductController implements OnModuleInit {
     summary: 'Create product'
   })
   @Post()
-  create(@Body() createProductDto: CreateProductDto): Observable<Product> {
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: './uploads/products',
+      filename: (req: Request, file: Express.Multer.File, cb: Function) => {
+        const name = file.originalname.split('.')[0]
+        const fileExtansion = file.originalname.split('.')[1]
+        const newFileName = name.split(" ").join('_') + '_' + Date.now() + '.' + fileExtansion
+        cb(null, newFileName)
+      }
+    }),
+    fileFilter: (req: Request, file: Express.Multer.File, cb: Function) => {
+      if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/) && file.size > 31457280) return cb(null, false)
+      cb(null, true)
+    }
+  }))
+  create(@Body() createProductDto: CreateProductDto, @UploadedFile() file: Express.Multer.File): Observable<Product> {
+    const imagePath = `http://localhost:3000/api/products/pictures/${file.filename}`
+    createProductDto.image = imagePath
     return this.client.send('create.product', createProductDto)
   }
 

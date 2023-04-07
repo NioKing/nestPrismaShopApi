@@ -1,9 +1,8 @@
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
 import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { Product } from '@app/common/product/entities/product.entity';
-import { Controller, Get, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Query, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
 import { ProductService } from './product.service';
 
 interface params {
@@ -36,7 +35,6 @@ export class ProductController {
 
   @MessagePattern('search.product')
   searchForProduct(@Payload() query: string) {
-    console.log(query)
     return this.productService.searchForProduct(query)
   }
 
