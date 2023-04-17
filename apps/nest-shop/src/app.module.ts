@@ -12,9 +12,12 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AtGuard } from '@app/common/auth/decorators/guards/at.guard';
 import { RolesGuard } from '@app/common/auth/decorators/guards/roles.guard';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { MetricsModule } from './metrics/metrics.module';
+import { MetricsController } from './metrics/metrics.controller';
 
 @Module({
-  imports: [ProductModule, CategoryModule, CartModule, UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
+  imports: [ProductModule, MetricsModule ,CategoryModule, CartModule, UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),
@@ -38,7 +41,8 @@ import { RolesGuard } from '@app/common/auth/decorators/guards/roles.guard';
       // password: configService.get<string>('REDIS_PASSWORD'),
       ttl: +configService.get<number>('REDIS_TTL')
     })
-  })],
+  })
+],
   controllers: [],
   providers: [{
     provide: APP_GUARD,
