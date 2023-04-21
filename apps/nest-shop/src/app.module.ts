@@ -15,9 +15,10 @@ import { RolesGuard } from '@app/common/auth/decorators/guards/roles.guard';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { MetricsModule } from './metrics/metrics.module';
 import { MetricsController } from './metrics/metrics.controller';
+import { SearchModule } from './search/search.module';
 
 @Module({
-  imports: [ProductModule, MetricsModule ,CategoryModule, CartModule, UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
+  imports: [ProductModule, MetricsModule ,CategoryModule, CartModule, SearchModule ,UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),

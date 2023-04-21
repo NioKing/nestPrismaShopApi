@@ -1,28 +1,26 @@
-
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { TerminusModule } from '@nestjs/terminus';
-import { HealthController } from './health.controller';
+import { SearchController } from './search.controller';
 
 @Module({
     imports: [
         ClientsModule.register([
             {
-                name: 'HEALTH_MICROSERVICE',
+                name: 'SEARCH_MICROSERVICE',
                 transport: Transport.KAFKA,
                 options: {
                     client: {
-                        clientId: 'health',
+                        clientId: 'search',
                         brokers: ['localhost:9092']
                     },
                     consumer: {
-                        groupId: 'health-consumer'
-                    }
+                        groupId: 'search-consumer'
+                    },
                 }
             }
         ])
     ],
-    controllers: [HealthController],
-    providers: [],
+    controllers: [SearchController],
+    providers: []
 })
-export default class HealthModule { }
+export class SearchModule { }

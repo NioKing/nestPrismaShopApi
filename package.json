@@ -20,10 +20,12 @@
     "test:e2e": "jest --config ./apps/nest-shop/test/jest-e2e.json"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.7.0",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/jwt": "^10.0.2",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "9.3.0",
@@ -34,6 +36,7 @@
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/terminus": "^9.2.1",
     "@prisma/client": "^4.9.0",
+    "@types/uuid": "^9.0.1",
     "@willsoto/nestjs-prometheus": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cache-manager": "^5.1.7",
@@ -50,7 +53,8 @@
     "passport-jwt": "^4.0.1",
     "prom-client": "^14.2.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

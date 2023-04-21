@@ -2,13 +2,23 @@ import { PrismaService } from '@app/common/prisma/prisma.service';
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
 import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { Product } from '@app/common/product/entities/product.entity';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductService {
-  constructor(private prisma: PrismaService) { }
+  constructor(
+    private prisma: PrismaService,
+    @Inject('SEARCH_MICROSERVICE') private readonly searchClient: ClientKafka,
+    private readonly configService: ConfigService
+    ) { }
 
   create(createProductDto: CreateProductDto): Promise<Product> {
+    this.searchClient.emit('create.record', {
+      index: this.configService.get<string>('ELASTIC_INDEX'),
+      body: createProductDto
+    })
     if(createProductDto.categoryId) {
       return this.prisma.product.create({
         data: {
