@@ -6,6 +6,7 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 
 interface search {
   index: string
+  id?: string
 }
 
 @Controller()
@@ -22,4 +23,11 @@ export class SearchController {
     return this.searchService.createRecord(data.index, data.body)
   }
 
+  @MessagePattern('get.search.by.id')
+  getSearchById(@Payload() data) {
+    // console.log(data.index.index)
+    // console.log(data.index)
+    // let {index, id} = data
+    return this.searchService.findById(data.index, data.id)
+  }
 }

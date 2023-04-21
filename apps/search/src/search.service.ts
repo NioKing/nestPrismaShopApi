@@ -40,5 +40,13 @@ export class SearchService {
     return data.hits.hits
   }
   
+  async findById(index: string, id: string) {
+    let data = await this.elasticService.get({
+      index: index,
+      id: id
+    })
+    return data
+  }
+  
   
 }

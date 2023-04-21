@@ -14,6 +14,7 @@ export class SearchController implements OnModuleInit {
 
     async onModuleInit() {
         this.client.subscribeToResponseOf('get.search')
+        this.client.subscribeToResponseOf('get.search.by.id')
         await this.client.connect()
     }
 
@@ -22,4 +23,12 @@ export class SearchController implements OnModuleInit {
     search(@Param() index: string) {
         return this.client.send('get.search', index)
     }
+
+
+    @isPublic()
+    @Get(':index/:id')
+    searchById(@Param() index: string, @Param() id: string) {
+        return this.client.send('get.search.by.id', index)
+    }
+    
 }
