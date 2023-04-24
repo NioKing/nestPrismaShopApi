@@ -24,10 +24,12 @@ export class SearchController {
   }
 
   @MessagePattern('get.search.by.id')
-  getSearchById(@Payload() data) {
-    // console.log(data.index.index)
-    // console.log(data.index)
-    // let {index, id} = data
+  getSearchById(@Payload() data: search) {
     return this.searchService.findById(data.index, data.id)
+  }
+
+  @EventPattern('delete.record')
+  deleteRecord(@Payload() data: search) {
+    return this.searchService.deleteById(data.index, data.id)
   }
 }

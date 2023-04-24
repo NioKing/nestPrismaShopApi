@@ -17,13 +17,7 @@ export class SearchService {
   }
 
   async createRecord(index: string, body: any) {
-    const productIndex = await this.elasticService.indices.get({
-      index
-    })
-    if (!productIndex) {
-      await this.createIndex(index)
-    }
-    await this.elasticService.create({
+    this.elasticService.create({
       id: uuid.v4(),
       index: index,
       document: body,
@@ -31,9 +25,6 @@ export class SearchService {
   }
 
   async findAll(index: string) {
-    // return await this.elasticService.indices.get({
-    //   index
-    // })
     let data = await this.elasticService.search({
       index: index
     })
@@ -46,6 +37,14 @@ export class SearchService {
       id: id
     })
     return data
+  }
+  
+  deleteById(index: string, id: string) {
+    return this.elasticService.delete({
+      index,
+      id,
+
+    })
   }
   
   

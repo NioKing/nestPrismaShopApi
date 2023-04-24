@@ -27,7 +27,7 @@ export class SearchController implements OnModuleInit {
 
     @isPublic()
     @Get(':index/:id')
-    searchById(@Param() index: string, @Param() id: string) {
+    searchById(@Param() index: object, @Param() id: string) {
         return this.client.send('get.search.by.id', index)
     }
     
