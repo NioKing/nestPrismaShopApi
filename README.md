@@ -39,9 +39,7 @@ The following table lists the available endpoints of the Shop API:
 
 The Shop API uses JWT (JSON Web Tokens) for authentication. The following endpoints require authentication:
 
-- `/api/products` (create, update, delete operations)
-- `/api/orders` (create, update, delete operations)
-- `/api/customers` (create, update, delete operations)
+- `/api/cart` (create, update, delete operations)
 
 To perform authenticated requests, include the JWT token in the `Authorization` header as follows: `Authorization: Bearer <token>`
 
