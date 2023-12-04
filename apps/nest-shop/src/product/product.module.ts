@@ -15,7 +15,6 @@ import * as path from 'path';
             clientId: 'products',
             brokers: ['localhost:9092']
           },
-          // producerOnlyMode: true
           consumer: {
             groupId: 'products-consumer'
           }
