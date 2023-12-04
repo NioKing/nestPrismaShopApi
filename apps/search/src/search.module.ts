@@ -1,9 +1,11 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, OnModuleInit, RequestMethod } from '@nestjs/common';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PrismaService } from '@app/common/prisma/prisma.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -36,14 +38,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
     ConfigModule.forRoot({
-      envFilePath: 'apps/search/.env'
-    })
+      envFilePath: "apps/search/.env"
+    }),
+    ScheduleModule.forRoot()
   ],
   controllers: [SearchController],
-  providers: [SearchService],
+  providers: [SearchService, PrismaService],
 })
 export class SearchModule {
-
+  
+  
   constructor(
     private searchService: SearchService
   ){}

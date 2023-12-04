@@ -14,7 +14,7 @@ export class ProductService {
     private readonly configService: ConfigService
     ) { }
 
-  create(createProductDto: CreateProductDto): Promise<Product> {
+  async create(createProductDto: CreateProductDto): Promise<Product> {
     this.searchClient.emit('create.record', {
       index: this.configService.get<string>('ELASTIC_INDEX'),
       body: createProductDto
@@ -40,19 +40,13 @@ export class ProductService {
       )
     }
     return this.prisma.product.create({
-      data: {
-        description: createProductDto.description,
-        image: createProductDto.image,
-        price: createProductDto.price,
-        title: createProductDto.title,
-      }, 
+      data: createProductDto, 
       include: {
         categories: true,
         carts: true
       }
     }
     )
-    
   }
 
   findAll(): Promise<Array<Product>> {
