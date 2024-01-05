@@ -1,4 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Role } from "@prisma/client";
+import { Address } from "./address.entity";
 
 export class User {
     @ApiProperty()
@@ -12,4 +14,10 @@ export class User {
     
     @ApiProperty()
     harshedRt?: string | null;
+
+    // @ApiProperty()
+    // role: Role
+
+    // @ApiProperty()
+    // address: Address
 }

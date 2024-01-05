@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { PaymentController } from "./payment.controller";
 
 
 @Module({
@@ -17,10 +18,10 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
                         groupId: 'payment-consumer'
                     }
                 }
-            }
+            },
         ])
     ],
-    controllers: [],
+    controllers: [PaymentController],
     providers: []
 })
 export class PaymentModule { }

@@ -19,6 +19,18 @@ import { CartService } from './cart.service';
             groupId: 'cart-consumer'
           }
         }
+      }, {
+        name: 'PAYMENT_MICROSERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'payment',
+            brokers: ['localhost:9092']
+          },
+          consumer: {
+            groupId: 'payment-consumer'
+          }
+        }
       }
     ])
   ],

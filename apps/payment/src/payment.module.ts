@@ -19,8 +19,21 @@ import { StripeModule } from './stripe.module';
         consumer: {
           groupId: 'payment-consumer'
         }
-      }
+      },
     },
+    {
+      name: 'CART_MICROSERVICE',
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          clientId: 'cart',
+          brokers: ['localhost:9092']
+        },
+        consumer: {
+          groupId: 'cart-consumer'
+        }
+      }
+    }
   ]),
   ConfigModule.forRoot({
     envFilePath: 'apps/payment/.env'

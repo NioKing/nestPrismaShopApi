@@ -16,9 +16,11 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { MetricsModule } from './metrics/metrics.module';
 import { MetricsController } from './metrics/metrics.controller';
 import { SearchModule } from './search/search.module';
+import { PaymentModule } from './payment/payment.module'
+
 
 @Module({
-  imports: [ProductModule, MetricsModule ,CategoryModule, CartModule, SearchModule ,UserModule, HealthModule,MulterModule.register() ,ConfigModule.forRoot({
+  imports: [ProductModule, MetricsModule, CategoryModule, CartModule, SearchModule, UserModule, PaymentModule ,HealthModule, MulterModule.register(), ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),
@@ -34,7 +36,7 @@ import { SearchModule } from './search/search.module';
     isGlobal: true,
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: async(configService: ConfigService) => ({
+    useFactory: async (configService: ConfigService) => ({
       store: redisStore,
       host: configService.get<string>('REDIS_HOST_DEV'),
       port: configService.get<number>('REDIS_PORT_DEV'),
@@ -43,7 +45,7 @@ import { SearchModule } from './search/search.module';
       ttl: +configService.get<number>('REDIS_TTL')
     })
   })
-],
+  ],
   controllers: [],
   providers: [{
     provide: APP_GUARD,
@@ -57,7 +59,7 @@ import { SearchModule } from './search/search.module';
     provide: APP_GUARD,
     useClass: RolesGuard
   }
-  
-],
+
+  ],
 })
 export class AppModule { }
