@@ -8,22 +8,6 @@ import { HealthService } from './health.service';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'HEALTH_MICROSERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'health',
-            brokers: ['localhost:9092']
-          },
-          // producerOnlyMode: true
-          consumer: {
-            groupId: 'health-consumer'
-          }
-        }
-      }
-    ]),
     TerminusModule
   ],
   controllers: [HealthController],

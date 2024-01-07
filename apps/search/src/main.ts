@@ -4,18 +4,12 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(SearchModule, {
-    transport: Transport.KAFKA,
+    transport: Transport.RMQ,
     options: {
-      client: {
-        clientId: 'search',
-        brokers: ['localhost:9092'],
-      },
-      consumer: {
-        groupId: 'search-consumer'
-      }
+      urls: ['amqp://localhost:5672'],
+      queue: 'search_queue'
     }
-  }
-  )
+  })
   await app.listen();
 }
 bootstrap();

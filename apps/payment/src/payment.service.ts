@@ -1,36 +1,31 @@
 import { Cart } from '@app/common/cart/entities/cart.entity';
 import { Inject, Injectable, OnModuleInit, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientKafka, Payload } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { ClientKafka, ClientRMQ, Payload } from '@nestjs/microservices';
+import { lastValueFrom, map } from 'rxjs';
 import Stripe from 'stripe';
 
 @Injectable()
-export class PaymentService implements OnModuleInit {
+export class PaymentService {
 
   constructor(private config: ConfigService, @Inject('STRIPE_CLIENT') private stripe: Stripe,
-    @Inject('CART_MICROSERVICE') private readonly cartClient: ClientKafka,) {
+    @Inject('CART_MICROSERVICE') private readonly cartClient: ClientRMQ,) {
   }
 
-  async onModuleInit() {
-    this.cartClient.subscribeToResponseOf('find.user.cart')
-
-    await this.cartClient.connect()
-  }
 
   async checkout(userId: string) {
     let price = 0
-    this.cartClient.send('find.user.cart', userId).subscribe((v: Cart): void  => {
-      for(let i = 0; i < v.products.length; i++) {
-        price += +v.products[i].price
-      }
-      console.log(v)
-    })
+    const data$ = this.cartClient.send('find.user.cart', userId).pipe(map(v => v.products))
+    const products = await lastValueFrom(data$) as any[]
+    for (let i = 0; i < products.length; i++) { 
+      price += +products[i].price
+    }
     return this.stripe.paymentIntents.create({
-      amount: price * 100,
+      amount: +price.toFixed(2) * 100,
       currency: 'usd',
       payment_method_types: ['card']
     })
+    // if successful, emit message to cart to remove cart.products data
   }
 
 }

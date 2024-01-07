@@ -9,21 +9,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   controllers: [UserController],
   providers: [RefreshTokenStrategy, AccessTokenStrategy],
   imports: [
-    // JwtModule.register({}),
+    JwtModule.register({}),
     ClientsModule.register([
       {
         name: 'AUTH_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'auth',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'auth-consumer'
-          }
-        }
-      }
+          urls: ['amqp://localhost:5672'],
+          queue: 'auth_queue',
+        },
+      },
     ])
 ]
 })

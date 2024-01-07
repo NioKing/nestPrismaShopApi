@@ -11,55 +11,81 @@ import { RefreshTokenStrategy } from './strategies/rt.strategy';
 
 @Module({
   imports: [
+    // ClientsModule.register([
+    //   {
+    //     name: 'AUTH_MICROSERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       client: {
+    //         clientId: 'auth',
+    //         brokers: ['localhost:9092']
+    //       },
+    //       consumer: {
+    //         groupId: 'auth-consumer'
+    //       }
+    //     }
+    //   },
+    //   {
+    //     name: 'CART_MICROSERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       client: {
+    //         clientId: 'cart',
+    //         brokers: ['localhost:9092']
+    //       },
+    //       consumer: {
+    //         groupId: 'cart-consumer'
+    //       }
+    //     }
+    //   },
+    //   {
+    //     name: 'NOTIFICATIONS_MICROSERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       client: {
+    //         clientId: 'notifications',
+    //         brokers: ['localhost:9092']
+    //       },
+    //       consumer: {
+    //         groupId: 'notifications-consumer'
+    //       }
+    //     }
+    //   }
+    // ],
+    // ),
     ClientsModule.register([
       {
         name: 'AUTH_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'auth',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'auth-consumer'
-          }
-        }
+          urls: ['amqp://localhost:5672'],
+          queue: 'auth_queue',
+        },
       },
       {
         name: 'CART_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'cart',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'cart-consumer'
-          }
-        }
+          urls: ['amqp://localhost:5672'],
+          queue: 'cart_queue',
+        },
       },
       {
         name: 'NOTIFICATIONS_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'notifications',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'notifications-consumer'
-          }
-        }
-      }
-    ],
-    ),
+          urls: ['amqp://localhost:5672'],
+          queue: 'notifications_queue',
+        },
+      },
+    ]),
     ConfigModule.forRoot({
       isGlobal: true
     }),
     JwtModule.register({}),
-    KafkaModule,
+    // KafkaModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, PrismaService],
 })
-export class AuthModule {}
+export class AuthModule { }

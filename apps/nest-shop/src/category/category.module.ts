@@ -4,20 +4,30 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    // ClientsModule.register([
+    //   {
+    //     name: 'CATEGORY_MICROSERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       client: {
+    //         clientId: 'category',
+    //         brokers: ['localhost:9092']
+    //       },
+    //       consumer: {
+    //         groupId: 'category-consumer'
+    //       }
+    //     }
+    //   }
+    // ])
     ClientsModule.register([
       {
         name: 'CATEGORY_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'category',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'category-consumer'
-          }
-        }
-      }
+          urls: ['amqp://localhost:5672'],
+          queue: 'category_queue',
+        },
+      },
     ])
   ],
   controllers: [CategoryController],

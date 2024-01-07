@@ -4,17 +4,12 @@ import { HealthModule } from './health.module';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(HealthModule, {
-    transport: Transport.KAFKA,
+    transport: Transport.RMQ,
     options: {
-      client: {
-        brokers: [`localhost:9092`],
-      },
-      consumer: {
-        groupId: 'health-consumer'
-      }
+      urls: ['amqp://localhost:5672'],
+      queue: 'health_queue'
     }
-  }
-  )
+  })
   await app.listen();
 }
 bootstrap();

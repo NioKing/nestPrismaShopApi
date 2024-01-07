@@ -1,15 +1,11 @@
 import { PrismaService } from '@app/common/prisma/prisma.service';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 
 @Injectable()
 export class CartService {
 
-  constructor(private prisma: PrismaService,
-    @Inject('PAYMENT_MICROSERVICE') private paymentClient: ClientKafka,
-    @Inject('CART_MICROSERVICE') private cartClient: ClientKafka
-  ) { }
-
+  constructor(private prisma: PrismaService) { }
 
   create(userId: string) {
     return this.prisma.cart.create({
@@ -26,6 +22,21 @@ export class CartService {
       },
       where: {
         userId: userId
+      }
+    })
+  }
+
+  addToCart(userId: string, productId: number) {
+    return this.prisma.cart.update({
+      where: {
+        userId: userId
+      },
+      data: {
+        products: {
+          connect: {
+            id: productId
+          }
+        }
       }
     })
   }

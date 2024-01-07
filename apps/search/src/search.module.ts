@@ -9,21 +9,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'SEARCH_MICROSERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'search',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'search-consumer'
-          }
-        }
-      }
-    ]),
     ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

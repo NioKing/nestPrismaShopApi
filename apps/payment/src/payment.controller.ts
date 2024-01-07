@@ -12,10 +12,11 @@ export class PaymentController {
   @MessagePattern('get.checkout')
   getCheckout(@Payload() userId: string) {
     try {
-      return this.paymentService.checkout(userId)
+      return this.paymentService.checkout(userId);
     } catch(error) {
       return error
     }
+
   }
 
 }

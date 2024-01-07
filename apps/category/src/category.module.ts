@@ -6,21 +6,21 @@ import { CategoryService } from './category.service';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'CATEGORY_MICROSERVICE',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: 'category',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'category-consumer'
-          }
-        }
-      }
-    ])
+    // ClientsModule.register([
+    //   {
+    //     name: 'CATEGORY_MICROSERVICE',
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //       client: {
+    //         clientId: 'category',
+    //         brokers: ['localhost:9092']
+    //       },
+    //       consumer: {
+    //         groupId: 'category-consumer'
+    //       }
+    //     }
+    //   }
+    // ])
   ],
   controllers: [CategoryController],
   providers: [CategoryService, PrismaService],

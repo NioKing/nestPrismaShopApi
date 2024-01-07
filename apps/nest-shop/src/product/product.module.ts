@@ -9,17 +9,12 @@ import * as path from 'path';
     ClientsModule.register([
       {
         name: 'PRODUCTS_MICROSERVICE',
-        transport: Transport.KAFKA,
+        transport: Transport.RMQ,
         options: {
-          client: {
-            clientId: 'products',
-            brokers: ['localhost:9092']
-          },
-          consumer: {
-            groupId: 'products-consumer'
-          }
-        }
-      }
+          urls: ['amqp://localhost:5672'],
+          queue: 'products_queue',
+        },
+      },
     ])
   ],
   controllers: [ProductController],

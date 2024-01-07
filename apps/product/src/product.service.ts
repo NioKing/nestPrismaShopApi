@@ -4,13 +4,13 @@ import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { Product } from '@app/common/product/entities/product.entity';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductService {
   constructor(
     private prisma: PrismaService,
-    @Inject('SEARCH_MICROSERVICE') private readonly searchClient: ClientKafka,
+    @Inject('SEARCH_MICROSERVICE') private readonly searchClient: ClientRMQ,
     private readonly configService: ConfigService
     ) { }
 

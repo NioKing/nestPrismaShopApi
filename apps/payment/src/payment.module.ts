@@ -8,31 +8,39 @@ import { StripeModule } from './stripe.module';
 
 @Module({
   imports: [ClientsModule.register([
-    {
-      name: 'PAYMENT_MICROSERVICE',
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: 'payment',
-          brokers: ['localhost:9092']
-        },
-        consumer: {
-          groupId: 'payment-consumer'
-        }
-      },
-    },
+    // {
+    //   name: 'PAYMENT_MICROSERVICE',
+    //   transport: Transport.KAFKA,
+    //   options: {
+    //     client: {
+    //       clientId: 'payment',
+    //       brokers: ['localhost:9092']
+    //     },
+    //     consumer: {
+    //       groupId: 'payment-consumer'
+    //     }
+    //   },
+    // },
+    // {
+    //   name: 'CART_MICROSERVICE',
+    //   transport: Transport.KAFKA,
+    //   options: {
+    //     client: {
+    //       clientId: 'cart',
+    //       brokers: ['localhost:9092']
+    //     },
+    //     consumer: {
+    //       groupId: 'cart-consumer'
+    //     }
+    //   }
+    // }
     {
       name: 'CART_MICROSERVICE',
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          clientId: 'cart',
-          brokers: ['localhost:9092']
-        },
-        consumer: {
-          groupId: 'cart-consumer'
-        }
-      }
+        urls: ['amqp://localhost:5672'],
+        queue: 'cart_queue',
+      },
     }
   ]),
   ConfigModule.forRoot({

@@ -5,10 +5,8 @@ import { CartService } from './cart.service';
 @Controller()
 export class CartController {
   constructor(
-    private readonly cartService: CartService, 
-    @Inject('CART_MICROSERVICE') private cartClient: ClientKafka
+    private readonly cartService: CartService,
     ) { }
-
 
   @MessagePattern('create.cart')
   createCart(@Payload() userId: string) {
@@ -23,6 +21,11 @@ export class CartController {
   @MessagePattern('find.user.cart')
   getUserCart(@Payload() userId: string) {
     return this.cartService.findUserCart(userId)
+  }
+
+  @MessagePattern('add.to.cart')
+  addToCart(@Payload()data: any) {
+    return this.cartService.addToCart(data.userId, data.productId.productId)
   }
 
 }

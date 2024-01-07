@@ -7,17 +7,12 @@ import { SearchController } from './search.controller';
         ClientsModule.register([
             {
                 name: 'SEARCH_MICROSERVICE',
-                transport: Transport.KAFKA,
+                transport: Transport.RMQ,
                 options: {
-                    client: {
-                        clientId: 'search',
-                        brokers: ['localhost:9092']
-                    },
-                    consumer: {
-                        groupId: 'search-consumer'
-                    },
-                }
-            }
+                    urls: ['amqp://localhost:5672'],
+                    queue: 'search_queue',
+                },
+            },
         ])
     ],
     controllers: [SearchController],

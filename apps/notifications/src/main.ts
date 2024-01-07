@@ -4,17 +4,12 @@ import { NotificationsModule } from './notifications.module';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(NotificationsModule, {
-    transport: Transport.KAFKA,
+    transport: Transport.RMQ,
     options: {
-      client: {
-        brokers: [`localhost:9092`],
-      },
-      consumer: {
-        groupId: 'notifications-consumer'
-      }
+      urls: ['amqp://localhost:5672'],
+      queue: 'notifications_queue',
     }
-  }
-  )
+  })
   await app.listen();
 }
 bootstrap();

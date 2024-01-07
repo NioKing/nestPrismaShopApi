@@ -4,17 +4,12 @@ import { CategoryModule } from './category.module';
 
   async function bootstrap() {
     const app = await NestFactory.createMicroservice<MicroserviceOptions>(CategoryModule, {
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          brokers: [`localhost:9092`],
-        },
-        consumer: {
-          groupId: 'category-consumer'
-        }
+        urls: ['amqp://localhost:5672'],
+        queue: 'category_queue',
       }
-    }
-    )
+    })
     await app.listen();
   }
 bootstrap();

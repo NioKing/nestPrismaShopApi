@@ -9,17 +9,12 @@ import { HealthController } from './health.controller';
         ClientsModule.register([
             {
                 name: 'HEALTH_MICROSERVICE',
-                transport: Transport.KAFKA,
+                transport: Transport.RMQ,
                 options: {
-                    client: {
-                        clientId: 'health',
-                        brokers: ['localhost:9092']
-                    },
-                    consumer: {
-                        groupId: 'health-consumer'
-                    }
-                }
-            }
+                    urls: ['amqp://localhost:5672'],
+                    queue: 'health_queue',
+                },
+            },
         ])
     ],
     controllers: [HealthController],

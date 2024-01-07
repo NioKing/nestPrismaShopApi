@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, Use
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { Inject, Res, UploadedFile } from '@nestjs/common/decorators';
 import { diskStorage } from 'multer';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { Product } from '@app/common/product/entities/product.entity';
 import { CreateProductDto } from '@app/common/product/dto/create-product.dto';
@@ -14,20 +14,11 @@ import { Request, Response } from 'express'
 
 @ApiTags('products')
 @Controller('products')
-export class ProductController implements OnModuleInit {
+export class ProductController {
   constructor(
-    @Inject('PRODUCTS_MICROSERVICE') private readonly client: ClientKafka
+    @Inject('PRODUCTS_MICROSERVICE') private readonly client: ClientRMQ
   ) { }
 
-
-  async onModuleInit() {
-    this.client.subscribeToResponseOf('get.products')
-    this.client.subscribeToResponseOf('create.product')
-    this.client.subscribeToResponseOf('get.product')
-    this.client.subscribeToResponseOf('update.product')
-    this.client.subscribeToResponseOf('delete.product')
-    await this.client.connect()
-  }
 
   @ApiResponse({
     type: Product,

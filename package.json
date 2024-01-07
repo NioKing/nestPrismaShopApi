@@ -38,6 +38,8 @@
     "@prisma/client": "^4.9.0",
     "@types/uuid": "^9.0.1",
     "@willsoto/nestjs-prometheus": "^5.1.1",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "cache-manager": "^5.1.7",
     "cache-manager-redis-store": "^2.0.0",

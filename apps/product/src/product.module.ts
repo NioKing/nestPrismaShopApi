@@ -9,19 +9,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ClientsModule.register([
     {
-      name: 'PRODUCTS_MICROSERVICE',
-      transport: Transport.KAFKA,
-      options: {
-        client: {
-          clientId: 'products',
-          brokers: ['localhost:9092']
-        },
-        consumer: {
-          groupId: 'products-consumer'
-        }
-      }
-    },
-    {
       name: 'SEARCH_MICROSERVICE',
       transport: Transport.KAFKA,
       options: {

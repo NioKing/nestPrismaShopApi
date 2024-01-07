@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, OnModuleInit, Inject, OnApplicationShutdown } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { Client, ClientKafka, Transport } from '@nestjs/microservices';
+import { Client, ClientKafka, ClientRMQ, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { refreshTokenData } from '@app/common/interfaces/refresh-token.interface';
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
@@ -19,18 +19,18 @@ import { Roles } from '@app/common/auth/decorators/roles.decorator';
 export class UserController implements OnModuleInit {
 
   constructor(
-    @Inject('AUTH_MICROSERVICE') private client: ClientKafka
+    @Inject('AUTH_MICROSERVICE') private client: ClientRMQ
   ) { }
 
   async onModuleInit() {
-    this.client.subscribeToResponseOf('sign.up')
-    this.client.subscribeToResponseOf('sign.in')
-    this.client.subscribeToResponseOf('refresh.tokens')
-    this.client.subscribeToResponseOf('logout')
-    this.client.subscribeToResponseOf('find.current.user')
-    this.client.subscribeToResponseOf('update.current.user')
-    this.client.subscribeToResponseOf('delete.current.user')
-    await this.client.connect()
+    // this.client.subscribeToResponseOf('sign.up')
+    // this.client.subscribeToResponseOf('sign.in')
+    // this.client.subscribeToResponseOf('refresh.tokens')
+    // this.client.subscribeToResponseOf('logout')
+    // this.client.subscribeToResponseOf('find.current.user')
+    // this.client.subscribeToResponseOf('update.current.user')
+    // this.client.subscribeToResponseOf('delete.current.user')
+    // await this.client.connect()
   }
 
   @isPublic()

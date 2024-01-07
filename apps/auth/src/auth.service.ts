@@ -6,7 +6,7 @@ import { ForbiddenException } from '@nestjs/common/exceptions';
 import exclude from '@app/common/utils/excludeField';
 import hashData from '@app/common/utils/hashData';
 import { ConfigService } from '@nestjs/config';
-import { ClientKafka } from '@nestjs/microservices';
+import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 import { PrismaService } from '@app/common/prisma/prisma.service';
 import { CreateUserDto } from '@app/common/auth/dto/create-user.dto';
 import { Tokens } from '@app/common/auth/dto/tokens.type';
@@ -22,8 +22,8 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-    @Inject('CART_MICROSERVICE') private readonly cartClient: ClientKafka,
-    @Inject('NOTIFICATIONS_MICROSERVICE') private readonly notificationsClient: ClientKafka
+    @Inject('CART_MICROSERVICE') private readonly cartClient: ClientRMQ,
+    @Inject('NOTIFICATIONS_MICROSERVICE') private readonly notificationsClient: ClientRMQ
   ) { }
 
 
