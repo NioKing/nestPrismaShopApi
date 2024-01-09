@@ -13,15 +13,20 @@ export class NotificationsService {
 
   // @Cron(CronExpression.EVERY_30_SECONDS)
   
-  async sendEmail(email: string) {
-    await this.mailerService.sendMail({
-      to: email,
-      subject: `Welcome to Shop App, ${email}!`,
-      template: './welcoming',
-      context: {
-        email: 'Username'
-      }
-    })
+  async sendEmail(email: string, status: string) {
+    switch(status) {
+      case 'welcome': 
+        await this.mailerService.sendMail({
+          to: email,
+          subject: `Welcome to Shop App, ${email}!`,
+          template: './welcoming',
+          context: {
+            email: 'Username'
+          }
+        })
+        break;
+      
+    }
   }
   
 }

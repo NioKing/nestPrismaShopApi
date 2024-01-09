@@ -8,7 +8,7 @@ export class NotificationsController {
 
   @EventPattern('send.welcome.email')
   sendWelcomeEmail(@Payload() email: string) {
-    return this.notificationsService.sendEmail(email)
+    return this.notificationsService.sendEmail(email, 'welcome')
   }
 
 }
