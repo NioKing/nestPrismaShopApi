@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, OnModuleInit, Inject, OnApplicationShutdown } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, OnModuleInit, Inject, OnApplicationShutdown, HttpStatus, HttpCode } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Client, ClientKafka, ClientRMQ, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
@@ -13,29 +13,23 @@ import { User } from '@app/common/auth/entities/user.entity';
 import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@app/common/auth/decorators/roles.decorator';
+import { Response } from 'express';
 
 @ApiTags('user')
 @Controller()
-export class UserController implements OnModuleInit {
+export class UserController {
 
   constructor(
-    @Inject('AUTH_MICROSERVICE') private client: ClientRMQ
+    @Inject('AUTH_MICROSERVICE') private client: ClientRMQ,
+    @Inject('NOTIFICATIONS_MICROSERVICE') private notifClient: ClientRMQ,
   ) { }
 
-  async onModuleInit() {
-    // this.client.subscribeToResponseOf('sign.up')
-    // this.client.subscribeToResponseOf('sign.in')
-    // this.client.subscribeToResponseOf('refresh.tokens')
-    // this.client.subscribeToResponseOf('logout')
-    // this.client.subscribeToResponseOf('find.current.user')
-    // this.client.subscribeToResponseOf('update.current.user')
-    // this.client.subscribeToResponseOf('delete.current.user')
-    // await this.client.connect()
-  }
 
   @isPublic()
   @Post('register')
-  signUp(@Body() createUserDto: CreateUserDto): Observable<Tokens> {
+  @HttpCode(200)
+  signUp(@Body() createUserDto: CreateUserDto, @Res({passthrough: true}) response: Response): Observable<Tokens> {
+    if(response.statusCode === 200) this.notifClient.emit('send.welcome.email', createUserDto.email)
     return this.client.send('sign.up', createUserDto)
   }
 

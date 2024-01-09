@@ -19,6 +19,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           queue: 'auth_queue',
         },
       },
+      {
+        name: 'NOTIFICATIONS_MICROSERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'notifications_queue',
+        },
+      }
     ])
 ]
 })
