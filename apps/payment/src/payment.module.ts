@@ -12,7 +12,7 @@ import { StripeModule } from './stripe.module';
       name: 'CART_MICROSERVICE',
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
+        urls: ['amqp://rabbitmq:5672'],
         queue: 'cart_queue',
       },
     },
@@ -20,7 +20,7 @@ import { StripeModule } from './stripe.module';
       name: 'AUTH_MICROSERVICE',
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
+        urls: ['amqp://rabbitmq:5672'],
         queue: 'auth_queue',
       },
     }
