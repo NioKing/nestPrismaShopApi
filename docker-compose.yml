@@ -1,109 +1,123 @@
 version: '3.8'
 services:
-  nest-shop:
-    build:
-      dockerfile: ./apps/nest-shop/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev nest-shop
-    ports:
-      - 3000:3000
-    depends_on:
-      - redis
-      - kafka
-  auth:
-    build:
-      dockerfile: ./apps/auth/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev auth
-    depends_on:
-      - kafka
-  product:
-    build:
-      dockerfile: ./apps/product/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev product
-    depends_on:
-      - kafka
-  health:
-    build:
-      dockerfile: ./apps/health/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev health
-    depends_on:
-      - kafka
-  notifications:
-    build:
-      dockerfile: ./apps/notifications/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev notifications
-    depends_on:
-      - kafka
-  category:
-    build:
-      dockerfile: ./apps/category/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev category
-    depends_on:
-      - kafka
-  cart:
-    build:
-      dockerfile: ./apps/cart/Dockerfile
-      context: .
-      target: development
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    command: npm run start:dev cart
-    depends_on:
-      - kafka
   redis:
     image: redis
     ports:
       - 6379:6379
-    volumes:
-      - redis:/data
-  kafka:
-    image: obsidiandynamics/kafka
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - 9092:9092
-volumes:
-  redis:
-    driver: local
+      - '5672:5672'
+      - "15672:15672"
+  nest-shop:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+      args:
+        - --target=development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    command: npm run start:dev nest-shop --watch
+    ports:
+      - 3000:3000
+    depends_on:
+      - rabbitmq
+      - redis
+  auth:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev auth --watch
+  product:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev product --watch
+  health:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev health --watch
+  notifications:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev notifications --watch
+  category:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev category --watch
+  cart:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev cart --watch
+  payment:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev payment --watch
+networks:
+  default:
+    driver: bridge

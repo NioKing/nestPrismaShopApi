@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, UseInterceptors, OnModuleInit, CacheTTL } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { Inject, Res, UploadedFile } from '@nestjs/common/decorators';
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { Product } from '@app/common/product/entities/product.entity';

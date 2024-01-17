@@ -82,6 +82,7 @@ export class SearchService {
 
     })
   }
+
   
   // @Cron(CronExpression.EVERY_10_SECONDS)
   async searchSync() {

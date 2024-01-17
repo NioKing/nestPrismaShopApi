@@ -11,7 +11,8 @@ import { HealthController } from './health.controller';
                 name: 'HEALTH_MICROSERVICE',
                 transport: Transport.RMQ,
                 options: {
-                    urls: ['amqp://localhost:5672'],
+                    // urls: ['amqp://localhost:5672'],
+                    urls: ['amqp://rabbitmq:5672'],
                     queue: 'health_queue',
                 },
             },

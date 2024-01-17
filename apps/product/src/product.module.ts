@@ -10,24 +10,18 @@ import { ConfigModule } from '@nestjs/config';
   imports: [ClientsModule.register([
     {
       name: 'SEARCH_MICROSERVICE',
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          clientId: 'search',
-          brokers: ['localhost:9092']
-        },
-        consumer: {
-          groupId: 'search-consumer'
-        }
+        urls: ['amqp://rabbitmq:5672'],
+        queue: 'search-queue'
       }
     }
-
   ]),
-  ConfigModule.forRoot({
-    envFilePath: 'apps/product/.env'
-  })
+ConfigModule.forRoot({
+  envFilePath: 'apps/product/.env'
+})
   ],
-  controllers: [ProductController],
+controllers: [ProductController],
   providers: [ProductService, PrismaService],
 })
-export class ProductModule {}
+export class ProductModule { }
