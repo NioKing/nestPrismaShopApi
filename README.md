@@ -34,6 +34,7 @@ The following table lists the available endpoints of the Shop API:
 | `/api/health`                | Health check endpoint                           |
 | `/api/search`                | Elastic endpoint                                |
 | `/api`                       | Swagger docs endpoint                           |
+| `/payment`                   | Payment docs endpoint                           |
 
 ## Authentication
 
@@ -106,7 +107,7 @@ Elasticsearch is used for implementing search functionality in the Shop API. It 
 
 ## Messaging
 
-Kafka is used as a message broker for handling asynchronous events and communication between different components of the Shop API. It provides reliable and scalable messaging.
+RabbitMQ is used as a message broker for handling asynchronous events and communication between different components of the Shop API. It provides reliable and scalable messaging.
 
 ## API Documentation
 
@@ -114,7 +115,7 @@ The Shop API is documented using Swagger. Swagger provides a user-friendly inter
 
 ## Containerization
 
-The Shop API is containerized using Docker. Docker allows for easy deployment and scalability of the application by packaging it into lightweight, portable containers.
+The Shop API is containerized using Docker compose. Docker allows for easy deployment and scalability of the application by packaging it into lightweight, portable containers.
 
 ## Caching
 
