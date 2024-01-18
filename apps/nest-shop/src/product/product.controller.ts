@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, Query, UseInterceptors, OnModuleInit, CacheTTL } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, OnModuleInit} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { Inject, Res, UploadedFile } from '@nestjs/common/decorators';
 import { diskStorage, memoryStorage } from 'multer';
@@ -10,6 +10,7 @@ import { UpdateProductDto } from '@app/common/product/dto/update-product.dto';
 import { isPublic } from '@app/common/auth/decorators/is-public-route.decorator';
 import { ApiCreatedResponse, ApiHeader, ApiHeaders, ApiOkResponse, ApiOperation, ApiQuery, ApiResponse, ApiTags, } from '@nestjs/swagger';
 import { Request, Response } from 'express'
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 
 @ApiTags('products')

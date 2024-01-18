@@ -1,4 +1,4 @@
-import { CacheInterceptor, CacheModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { CartModule } from './cart/cart.module';
@@ -17,6 +17,7 @@ import { MetricsModule } from './metrics/metrics.module';
 import { MetricsController } from './metrics/metrics.controller';
 import { SearchModule } from './search/search.module';
 import { PaymentModule } from './payment/payment.module'
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 
 
 @Module({

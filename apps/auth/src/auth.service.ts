@@ -150,7 +150,7 @@ export class AuthService {
   }
 
   // Find user
-  async findCurrentUser(userId: string): Promise<excludedUser> {
+  async findCurrentUser(userId: string): Promise<any> {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId
@@ -171,7 +171,7 @@ export class AuthService {
     return this.prisma.user.findUnique({ where: { email } })
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<excludedUser> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<any> {
     let updatedUser = await this.prisma.user.update({
       where: {
         id

@@ -1,5 +1,6 @@
 import { CurrentUserId } from '@app/common/auth/decorators/current-user-id.decorator';
-import { Controller, Get, Post, Body, Patch, Param, Delete, CacheKey, CacheTTL, Inject, OnModuleInit, HttpException } from '@nestjs/common';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, OnModuleInit, HttpException } from '@nestjs/common';
 import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { lastValueFrom } from 'rxjs';

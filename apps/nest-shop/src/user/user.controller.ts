@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, CacheKey, CacheTTL, OnModuleInit, Inject, OnApplicationShutdown, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards, OnModuleInit, Inject, OnApplicationShutdown, HttpStatus, HttpCode } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Client, ClientKafka, ClientRMQ, Transport } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
@@ -14,6 +14,7 @@ import { UpdateUserDto } from '@app/common/auth/dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@app/common/auth/decorators/roles.decorator';
 import { Response } from 'express';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @ApiTags('user')
 @Controller()
