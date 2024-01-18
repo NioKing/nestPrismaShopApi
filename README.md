@@ -58,20 +58,17 @@ The Shop API uses the following data models:
 - `description` (string)
 - `categories` ([categories])
 - `image` (string)
-- `carts` ([carts])
 
 ### Category
 
 - `id` (number)
 - `categoryName` (string)
-- `products` ([Products])
 
 ### Cart
 
 - `id` (uuid)
 - `userId` (string)
 - `date` (DateTime)
-- `products` (product[])
 
 ### User
 
@@ -80,7 +77,6 @@ The Shop API uses the following data models:
 - `password` (string)
 - `hashedRt` (string)
 - `role` (Role)
-- `cart` (cart[])
 - `address` (address)
 
 ### Address
