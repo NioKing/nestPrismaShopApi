@@ -34,13 +34,15 @@ The following table lists the available endpoints of the Shop API:
 | `/api/health`                | Health check endpoint                           |
 | `/api/search`                | Elastic endpoint                                |
 | `/api`                       | Swagger docs endpoint                           |
-| `/payment`                   | Payment docs endpoint                           |
+| `/payment`                   | Payment endpoint                                |
 
 ## Authentication
 
 The Shop API uses JWT (JSON Web Tokens) for authentication. The following endpoints require authentication:
 
 - `/api/cart` (create, update, delete operations)
+- `/api/health` (check db availability)
+- `/payment` (create payment using stripe)
 
 To perform authenticated requests, include the JWT token in the `Authorization` header as follows: `Authorization: Bearer <token>`
 
