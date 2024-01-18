@@ -18,7 +18,7 @@ import { ConfigModule } from '@nestjs/config';
     }
   ]),
 ConfigModule.forRoot({
-  envFilePath: 'apps/product/.env'
+  envFilePath: ['apps/product/.env', '.env'],
 })
   ],
 controllers: [ProductController],

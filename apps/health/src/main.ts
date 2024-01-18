@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { HealthModule } from './health.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
+  const configService = new ConfigService()
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(HealthModule, {
     transport: Transport.RMQ,
     options: {
-      // urls: ['amqp://localhost:5672'],
-      urls: ['amqp://rabbitmq:5672'],
+      urls: [`${configService.get<string>('RMQ_URL')}`],
       queue: 'health_queue'
     }
   })

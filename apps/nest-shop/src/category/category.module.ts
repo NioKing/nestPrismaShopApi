@@ -1,33 +1,21 @@
 import { Module } from '@nestjs/common';
 import { CategoryController } from './category.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    // ClientsModule.register([
-    //   {
-    //     name: 'CATEGORY_MICROSERVICE',
-    //     transport: Transport.KAFKA,
-    //     options: {
-    //       client: {
-    //         clientId: 'category',
-    //         brokers: ['localhost:9092']
-    //       },
-    //       consumer: {
-    //         groupId: 'category-consumer'
-    //       }
-    //     }
-    //   }
-    // ])
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'CATEGORY_MICROSERVICE',
-        transport: Transport.RMQ,
-        options: {
-          // urls: ['amqp://localhost:5672'],
-          urls: ['amqp://rabbitmq:5672'],
-          queue: 'category_queue',
-        },
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [`${configService.get<string>('RMQ_URL')}`],
+            queue: 'category_queue',
+          },
+        }),
+        inject: [ConfigService],
       },
     ])
   ],

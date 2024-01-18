@@ -2,14 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { CategoryModule } from './category.module';
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 
   async function bootstrap() {
+    const configService = new ConfigService()
     const app = await NestFactory.createMicroservice<MicroserviceOptions>(CategoryModule, {
       transport: Transport.RMQ,
       options: {
-        // urls: ['amqp://localhost:5672'],
-        urls: ['amqp://rabbitmq:5672'],
+        urls: [`${configService.get<string>('RMQ_URL')}`],
         queue: 'category_queue',
       },
     })

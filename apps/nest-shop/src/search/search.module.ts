@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SearchController } from './search.controller';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
     imports: [
-        ClientsModule.register([
+        ClientsModule.registerAsync([
             {
                 name: 'SEARCH_MICROSERVICE',
-                transport: Transport.RMQ,
-                options: {
-                    // urls: ['amqp://localhost:5672'],
-                    urls: ['amqp://rabbitmq:5672'],
-                    queue: 'search_queue',
-                },
-            },
+                useFactory: async (configService: ConfigService) => ({
+                    transport: Transport.RMQ,
+                    options: {
+                        urls: [`${configService.get<string>('RMQ_URL')}`],
+                        queue: 'search_queue',
+                    }
+                }),
+                inject: [ConfigService]
+            }
         ])
     ],
     controllers: [SearchController],
