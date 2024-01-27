@@ -53,4 +53,9 @@ export class AuthController {
     await this.authService.remove(id);
     return 'Account has been removed!'
   }
+
+  @MessagePattern('verify.token')
+  verifyToken(@Payload() token: string) {
+    return this.authService.verifyToken(token)
+  }
 }

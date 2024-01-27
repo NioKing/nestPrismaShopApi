@@ -118,6 +118,19 @@ services:
     depends_on:
       - rabbitmq
     command: npm run start:dev payment --watch
+  support:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+    command: npm run start:dev support --watch
 networks:
   default:
     driver: bridge

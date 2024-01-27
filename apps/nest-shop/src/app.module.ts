@@ -18,10 +18,11 @@ import { MetricsController } from './metrics/metrics.controller';
 import { SearchModule } from './search/search.module';
 import { PaymentModule } from './payment/payment.module'
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { SupportModule } from './support/support.module';
 
 
 @Module({
-  imports: [ProductModule, MetricsModule, CategoryModule, CartModule, SearchModule, UserModule, PaymentModule ,HealthModule, MulterModule.register(), ConfigModule.forRoot({
+  imports: [ProductModule, MetricsModule, CategoryModule, CartModule, SearchModule, UserModule, PaymentModule ,HealthModule, SupportModule,MulterModule.register(), ConfigModule.forRoot({
     isGlobal: true,
     validationSchema: joi.object({
       DATABASE_URL: joi.string().required(),

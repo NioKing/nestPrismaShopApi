@@ -193,5 +193,12 @@ export class AuthService {
     return this.prisma.user.findMany({})
   }
 
+  // verify token
+  async verifyToken(token: string): Promise<any> {
+    const {sub, iat, exp, ...data} = await this.jwtService.verifyAsync(token, {
+      secret: this.configService.get<string>('AT_SECRET')
+    })
+    return data
+  }
 
 }

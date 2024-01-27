@@ -111,6 +111,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/payment/tsconfig.app.json"
       }
+    },
+    "support": {
+      "type": "application",
+      "root": "apps/support",
+      "entryFile": "main",
+      "sourceRoot": "apps/support/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/support/tsconfig.app.json"
+      }
     }
   }
 }
