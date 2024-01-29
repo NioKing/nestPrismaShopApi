@@ -9,7 +9,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [`${configService.get<string>('RMQ_URL')}`],
-      queue: 'products_queue'
+      queue: 'support_queue'
     }
   })
   await app.listen();
