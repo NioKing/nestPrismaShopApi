@@ -8,6 +8,6 @@ export class SupportController {
 
   @EventPattern('get.message')
   getMessage(@Payload() data: any) {
-    console.log(data);
+    console.log('sup ms: ', data);
   }
 }
